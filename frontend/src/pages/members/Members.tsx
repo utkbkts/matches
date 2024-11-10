@@ -177,8 +177,8 @@ export const membersData = [
     lastActive: "2024-09-03",
     description:
       "Davis is a high school teacher who specializes in history and social sciences. He loves sharing his passion for history with his students. On weekends, Davis enjoys hiking with his dog and practicing photography, capturing the stunning landscapes of Vancouver’s mountains and forests.",
-    city: "Maple Ridge",
-    country: "Canada",
+    city: "Airdrie, Alberta, Canada",
+    country: "Airdrie, Alberta, Canada",
     isActive: true,
     image: "",
   },

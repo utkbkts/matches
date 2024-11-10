@@ -25,6 +25,8 @@ const FilterSection = () => {
   const maxAge = Number(searchParams.get("maxAge")) || 50; // Default to 50 if not set
   const withImage = searchParams.get("withImage");
 
+  const location = searchParams.get("location")?.toLowerCase() || "";
+
   // Filter members based on `isActive` and `gender` criteria
   const filteredMembers = membersData.filter(
     (item) =>
@@ -32,7 +34,8 @@ const FilterSection = () => {
       (!gender || item.gender === gender) &&
       calculateAge(item.dateOfBirth) >= minAge &&
       calculateAge(item.dateOfBirth) <= maxAge &&
-      (withImage === "true" ? item.image : true)
+      (withImage === "true" ? item.image : true) &&
+      (!location || item.country.toLowerCase().includes(location))
   );
   const currentItems = filteredMembers.slice(firstItemsIndex, lastItemsIndex);
   //searchParams Logic
@@ -51,6 +54,7 @@ const FilterSection = () => {
       minAge: minAge.toString(),
       maxAge: maxAge.toString(),
       withImage: withImage || "true",
+      location: location,
     });
   };
 
@@ -79,6 +83,15 @@ const FilterSection = () => {
       page: "1",
       minAge: minAge.toString(),
       maxAge: maxAge.toString(),
+    });
+  };
+
+  const handleSearch = (location: string) => {
+    console.log("🚀 ~ handleSearch ~ location:", location);
+    setCurrentPage(1);
+    setSearchParams({
+      page: "1",
+      location: location,
     });
   };
 
@@ -133,7 +146,7 @@ const FilterSection = () => {
 
           {/* Order By Select */}
           <div className="w-[220px]">
-            <LocationOrder />
+            <LocationOrder handleSearch={handleSearch} />
           </div>
         </div>
       </div>

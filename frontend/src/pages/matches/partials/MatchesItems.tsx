@@ -3,7 +3,7 @@ import { MembersType } from "@/types/types";
 import { Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const MemberItems = ({ member }: { member: MembersType }) => {
+const MatchesItems = ({ member }: { member: MembersType }) => {
   return (
     <div className="rounded-2xl relative border border-gray-200 mt-4 bg-gradient-to-t w-[400px] cursor-pointer">
       <div className="absolute bottom-0 w-full h-24 bg-gradient-to-b from-black/0 to-black/70 z-10"></div>
@@ -34,4 +34,4 @@ const MemberItems = ({ member }: { member: MembersType }) => {
   );
 };
 
-export default MemberItems;
+export default MatchesItems;

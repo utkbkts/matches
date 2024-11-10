@@ -1,7 +1,13 @@
-import React from "react";
+import { Separator } from "@/components/ui/separator";
 
 const MemberChat = () => {
-  return <div>MemberChat</div>;
+  return (
+    <div>
+      <h1 className="text-muted-foreground">Chat</h1>
+      <Separator />
+      <div></div>
+    </div>
+  );
 };
 
 export default MemberChat;

@@ -27,8 +27,8 @@ const Sidebar = () => {
     },
   ];
   return (
-    <div className="w-full mt-10 items-center h-[80vh] shadow-xl">
-      <div className="p-4 flex flex-col h-full">
+    <div className="h-[80vh] ">
+      <div className="flex p-2 flex-col h-full">
         <img
           src={member?.image}
           alt={member?.name}
@@ -58,11 +58,11 @@ const Sidebar = () => {
               </Link>
             ))}
           </ul>
-          <div className="mt-auto w-full">
+          <Link to={"/members"} className="mt-auto w-full">
             <Button className="w-full" variant={"outline"}>
               Go Back
             </Button>
-          </div>
+          </Link>
         </div>
       </div>
     </div>

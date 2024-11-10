@@ -61,6 +61,7 @@ export const membersData = [
     description:
       "Lois is an avid traveler who has visited over 20 countries, with her favorite being New Zealand. She works as a UX/UI designer and has a strong passion for user-centered design. In her spare time, Lois enjoys cycling around the city and exploring the Vancouver food scene with friends.",
     city: "Vancouver",
+    isActive: true,
     country: "Canada",
     image: "/images/f4.jpg",
   },
@@ -77,6 +78,7 @@ export const membersData = [
     description:
       "Ruthie is a wellness coach with a passion for mindfulness and meditation. She loves helping others discover the benefits of a balanced lifestyle. When not working, Ruthie enjoys exploring Vancouver’s vibrant yoga scene and spending quiet mornings by the ocean with her dog, Luna.",
     city: "New Westminster",
+    isActive: true,
     country: "Canada",
     image: "/images/f5.jpg",
   },
@@ -88,6 +90,7 @@ export const membersData = [
     gender: "male",
     dateOfBirth: "1992-03-05",
     name: "Todd Bennett",
+    isActive: true,
     created: "2024-08-17",
     lastActive: "2024-09-03",
     description:
@@ -109,6 +112,7 @@ export const membersData = [
     description:
       "Porter is a young entrepreneur with a startup in the tech industry. Passionate about innovation, he is always on the lookout for new challenges. In his free time, Porter enjoys kayaking, attending tech meetups, and hosting game nights with friends at his home in Vancouver.",
     city: "Langley",
+    isActive: true,
     country: "Canada",
     image: "/images/m2.jpg",
   },
@@ -125,6 +129,7 @@ export const membersData = [
     description:
       "Mayo is a dedicated community worker who is passionate about social causes. With a background in social work, Mayo is deeply involved in helping the homeless in Vancouver. He enjoys long hikes, playing soccer, and is always up for an adventure, whether it's traveling or exploring new local spots.",
     city: "Port Moody",
+    isActive: true,
     country: "Canada",
     image: "/images/m3.jpg",
   },
@@ -141,6 +146,7 @@ export const membersData = [
     description:
       "Skinner, a mechanical engineer, has always had a passion for building things from scratch. He enjoys tinkering with old cars and dreams of restoring a classic Mustang one day. In his spare time, he enjoys watching hockey and organizing weekend road trips with friends.",
     city: "North Vancouver",
+    isActive: true,
     country: "Canada",
     image: "/images/m4.jpg",
   },
@@ -157,7 +163,24 @@ export const membersData = [
       "Davis is a high school teacher who specializes in history and social sciences. He loves sharing his passion for history with his students. On weekends, Davis enjoys hiking with his dog and practicing photography, capturing the stunning landscapes of Vancouver’s mountains and forests.",
     city: "Maple Ridge",
     country: "Canada",
+    isActive: true,
     image: "/images/m5.jpg",
+  },
+  {
+    id: 10,
+    email: "davis.harrison@test.com",
+    username: "davis.harrison",
+    gender: "male",
+    dateOfBirth: "1994-02-14",
+    name: "Davis Harrison",
+    created: "2024-08-20",
+    lastActive: "2024-09-03",
+    description:
+      "Davis is a high school teacher who specializes in history and social sciences. He loves sharing his passion for history with his students. On weekends, Davis enjoys hiking with his dog and practicing photography, capturing the stunning landscapes of Vancouver’s mountains and forests.",
+    city: "Maple Ridge",
+    country: "Canada",
+    isActive: true,
+    image: "",
   },
 ];
 

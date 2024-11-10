@@ -17,4 +17,5 @@ export type MembersType = {
   city: string;
   country: string;
   image: string;
+  isActive?: boolean;
 };

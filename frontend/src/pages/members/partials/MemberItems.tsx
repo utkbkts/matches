@@ -7,7 +7,6 @@ const MemberItems = ({ member }: { member: MembersType }) => {
   return (
     <div className="rounded-2xl relative border border-gray-200 mt-4 bg-gradient-to-t w-[400px] cursor-pointer">
       <div className="absolute bottom-0 w-full h-24 bg-gradient-to-b from-black/0 to-black/70 z-10"></div>
-
       <div className="p-4 flex items-center justify-center">
         <Link
           to={`/members/details/${member.id}/profile`}

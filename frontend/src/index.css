@@ -64,7 +64,7 @@
     @apply bg-background text-foreground;
   }
 }
-.container .range-slider {
+.containerr .range-slider {
   position: relative;
   width: 400px;
   height: 5px;
@@ -74,7 +74,7 @@
   margin: 10px;
 }
 
-.container .range-slider .progress {
+.containerr .range-slider .progress {
   position: absolute;
   height: 100%;
   background: #17a288;
@@ -82,7 +82,7 @@
   z-index: 1; /* Make sure progress is below the thumbs */
 }
 
-.container .range-slider input[type="range"] {
+.containerr .range-slider input[type="range"] {
   position: absolute;
   top: -7px; /* Adjust the thumb's position */
   width: 100%;
@@ -93,7 +93,7 @@
   z-index: 2; /* Ensure the thumbs are on top */
 }
 
-.container .range-slider input::-webkit-slider-thumb {
+.containerr .range-slider input::-webkit-slider-thumb {
   pointer-events: auto;
   -webkit-appearance: none;
   width: 17px;
@@ -103,7 +103,7 @@
   z-index: 3; /* Ensure thumbs are always on top */
 }
 
-.container .range-slider input::-moz-range-thumb {
+.containerr .range-slider input::-moz-range-thumb {
   pointer-events: auto;
   -moz-appearance: none;
   width: 17px;

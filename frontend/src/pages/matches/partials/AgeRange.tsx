@@ -31,7 +31,7 @@ const AgeRange = ({ handleAgeRange }: Props) => {
   };
 
   return (
-    <div className="container">
+    <div className="containerr ">
       <span className="text-gray-600 flex items-center justify-between w-[400px]">
         Age Range{" "}
         <span>

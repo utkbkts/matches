@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import calculateAge from "@/helpers/dateFormat";
 import AgeRange from "./partials/AgeRange";
 import LocationOrder from "./partials/LocationOrder";
+import MobileTopBar from "./partials/MobileTopBar";
 
 const FilterSection = () => {
   const [isOn, setIsOn] = useState(true);
@@ -87,7 +88,6 @@ const FilterSection = () => {
   };
 
   const handleSearch = (location: string) => {
-    console.log("🚀 ~ handleSearch ~ location:", location);
     setCurrentPage(1);
     setSearchParams({
       page: "1",
@@ -98,11 +98,10 @@ const FilterSection = () => {
   return (
     <div className="w-full">
       <div className="shadow-xl w-full p-6 bg-white rounded-xl">
-        <div className="flex flex-wrap items-center justify-between gap-6">
+        <div className="xl:flex hidden items-center justify-between gap-6">
           <h1 className="font-bold text-gray-800 text-3xl">
             Results: {resultCount}
           </h1>
-
           {/* Gender Selection */}
           <div className="flex items-center gap-4">
             <h1 className="font-bold text-xl text-black/80">Gender:</h1>
@@ -121,12 +120,6 @@ const FilterSection = () => {
               />
             </div>
           </div>
-
-          {/* Age Range */}
-          <div className="flex  flex-col  w-[250px] gap-3">
-            <AgeRange handleAgeRange={handleAgeRange} />
-          </div>
-
           {/* With Range Toggle */}
           <div className="flex items-center gap-4">
             <span className="text-gray-600">With Photo</span>
@@ -143,11 +136,18 @@ const FilterSection = () => {
               </button>
             </div>
           </div>
+          {/* Age Range */}
+          <div className="flex  flex-col    gap-3">
+            <AgeRange handleAgeRange={handleAgeRange} />
+          </div>
 
           {/* Order By Select */}
           <div className="w-[220px]">
             <LocationOrder handleSearch={handleSearch} />
           </div>
+        </div>
+        <div className="xl:hidden block">
+          <MobileTopBar />
         </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 container mx-auto place-items-center">

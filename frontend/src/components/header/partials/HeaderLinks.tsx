@@ -22,6 +22,11 @@ const headerMenu = [
     title: "Messages",
     href: "/messages",
   },
+  {
+    id: 4,
+    title: "Members",
+    href: "/members",
+  },
 ];
 
 const HeaderLinks = () => {

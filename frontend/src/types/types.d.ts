@@ -9,7 +9,7 @@ export type MembersType = {
   email: string;
   username: string;
   gender: string;
-  dateOfBirth: string;
+  dateOfBirth: string | undefined;
   name: string;
   created: string;
   lastActive: string;
@@ -18,4 +18,11 @@ export type MembersType = {
   country: string;
   image: string;
   isActive?: boolean;
+};
+
+export type EditProfile = {
+  name?: string;
+  description?: string;
+  city?: string;
+  country?: string;
 };

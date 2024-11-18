@@ -7,7 +7,9 @@ import { Button } from "@/components/ui/button";
 const Sidebar = () => {
   const { id } = useParams();
   const location = useLocation();
-  const member = membersData.find((member) => member.id === parseInt(id));
+  const member = membersData.find(
+    (member) => member.id === parseInt(id as any)
+  );
   const basePath = `/members/details/${id}`;
   const navLinks = [
     {
@@ -40,7 +42,7 @@ const Sidebar = () => {
         <div className="flex flex-col justify-between flex-grow">
           <div className="flex gap-2">
             <h1 className="text-xl">
-              {member?.name}, {calculateAge(member?.dateOfBirth)}
+              {member?.name}, {calculateAge(member?.dateOfBirth as any)}
             </h1>
           </div>
           <Separator />

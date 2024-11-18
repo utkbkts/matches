@@ -20,7 +20,7 @@ const MemberItems = ({ member }: { member: MembersType }) => {
           />
           <div className="text-white relative z-50">
             <h2 className="text-lg font-semibold ">
-              {member.name},{calculateAge(member?.dateOfBirth)}
+              {member.name},{calculateAge(member?.dateOfBirth as string)}
             </h2>
             <p className="text-sm">{member.country}</p>
           </div>

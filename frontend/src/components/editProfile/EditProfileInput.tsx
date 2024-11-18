@@ -35,9 +35,10 @@ const EditProfileInput = ({
           <FormControl>
             {multiline ? (
               <Textarea
-                className="w-full p-2 border rounded-md"
+                className="w-full p-2 border rounded-md resize-none"
                 placeholder={placeholder}
                 {...field}
+                rows={6}
               />
             ) : (
               <Input placeholder={placeholder} {...field} />

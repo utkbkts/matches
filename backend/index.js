@@ -12,6 +12,8 @@ import errorMiddleware from "./middleware/error.middleware.js";
 import { ConnectedDatabase } from "./db/connected.db.js";
 //ROUTES
 import authRoutes from "./routes/auth.routes.js";
+import subscriptionRoutes from "./routes/subscription.route.js";
+
 //path
 const __dirname = path.resolve();
 //dotEnv config
@@ -40,6 +42,7 @@ app.use(
 
 //api v1 routes
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/subscription", subscriptionRoutes);
 
 app.use(errorMiddleware);
 

@@ -45,7 +45,7 @@ const subscriptionSchema = new mongoose.Schema(
     },
     subscription_type: {
       type: String,
-      enum: ["Gold", "Platinum"],
+      enum: ["Gold", "Platinum","Silver"],
       required: true,
     },
   },

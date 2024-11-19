@@ -52,6 +52,41 @@ const userSchema = new mongoose.Schema(
       ref: "Subscription",
       default: null,
     },
+    country: {
+      type: String,
+      required: true,
+    },
+    birthday: {
+      type: Date,
+      validate: {
+        validator: function (value) {
+          const age = new Date().getFullYear() - new Date(value).getFullYear();
+          return age >= 18;
+        },
+      },
+      required: true,
+    },
+    gender: {
+      type: String,
+      required: true,
+      enum: ["male", "female"],
+    },
+    liked: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    likedCount: {
+      type: Number,
+      default: 0,
+    },
+    myFavorite: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Liked",
+      },
+    ],
   },
   { timestamps: true }
 );

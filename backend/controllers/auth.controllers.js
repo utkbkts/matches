@@ -129,4 +129,103 @@ const liked = async (req, res, next) => {
   }
 };
 
-export default { register, login, logout, liked };
+const updateProfile = async (req, res, next) => {
+  try {
+    const userId = req.user._id;
+
+    const { name, status, country, city } = req.body;
+
+    const newUserData = {
+      name,
+      status,
+      country,
+      city,
+    };
+
+    const user = await User.findByIdAndUpdate(userId, newUserData, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).json({
+      user,
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+};
+
+const updatePhoto = async (req, res, next) => {
+  try {
+    const { picture } = req.body;
+
+    if (!picture) {
+      return next(new ErrorHandler("Photo is required", 400));
+    }
+
+    let pictureData = {};
+    try {
+      const avatarUpload = await upload_file(picture, "matches");
+      pictureData = {
+        public_id: avatarUpload.public_id,
+        url: avatarUpload.secure_url,
+      };
+    } catch (uploadError) {
+      return next(new ErrorHandler("Photo upload failed", 500));
+    }
+
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { picture: pictureData },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    if (!user) {
+      return next(new ErrorHandler("User not found", 404));
+    }
+    return res.status(200).json({
+      message: "Photo updated successfully",
+      user,
+    });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const passwordUpdate = async (req, res, next) => {
+  const userId = req.user._id;
+
+  try {
+    const user = await User.findById(userId).select("+password");
+
+    if (!user) {
+      return next(new ErrorHandler("User not found", 404));
+    }
+
+    const isMatch = await user.comparePassword(req.body.currentPassword);
+
+    if (!isMatch) {
+      return next(new ErrorHandler("Incorrect current password", 401));
+    }
+
+    user.password = req.body.password;
+
+    await user.save();
+    sendToken(user, 200, res);
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+};
+
+export default {
+  register,
+  login,
+  logout,
+  liked,
+  updateProfile,
+  passwordUpdate,
+  updatePhoto,
+};

@@ -13,6 +13,7 @@ import { ConnectedDatabase } from "./db/connected.db.js";
 //ROUTES
 import authRoutes from "./routes/auth.routes.js";
 import subscriptionRoutes from "./routes/subscription.route.js";
+import membersRoutes from "./routes/members.route.js";
 
 //path
 const __dirname = path.resolve();
@@ -43,6 +44,7 @@ app.use(
 //api v1 routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/subscription", subscriptionRoutes);
+app.use("/api/v1/members", membersRoutes);
 
 app.use(errorMiddleware);
 

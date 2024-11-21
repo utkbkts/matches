@@ -76,6 +76,11 @@ const subscriptionCreateStripe = async (req, res, next) => {
       currentSubscription: subscription._id,
     });
 
+    if (subscription.trial_end_date) {
+      subscription.subscription_status = "past_due";
+      await subscription.save();
+    }
+
     res.status(201).json({ url: session.url, subscription });
   } catch (error) {
     return res.status(500).json({
@@ -83,5 +88,78 @@ const subscriptionCreateStripe = async (req, res, next) => {
     });
   }
 };
+const updateSubscription = async (req, res, next) => {
+  try {
+    const { newPlanId, newPlanAmount, newPlanCurrency, newPlanInterval } =
+      req.body;
 
-export default { subscriptionCreateStripe };
+    if (!newPlanId || !newPlanAmount || !newPlanCurrency || !newPlanInterval) {
+      return next(new ErrorHandler("All fields are required", 400));
+    }
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "subscription",
+      line_items: [
+        {
+          price_data: {
+            currency: newPlanCurrency,
+            product_data: {
+              name: newPlanId,
+            },
+            unit_amount: newPlanAmount,
+            recurring: {
+              interval: newPlanInterval,
+              interval_count: 1,
+            },
+          },
+          quantity: 1,
+        },
+      ],
+      success_url: `${process.env.FRONTEND_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.FRONTEND_URL}/cancel`,
+    });
+    const existingSubscription = await Subscription.findOne({
+      user: req.user._id,
+      is_subscribed: true,
+    });
+
+    if (!existingSubscription) {
+      return next(new ErrorHandler("No active subscription found", 404));
+    }
+
+    existingSubscription.trial_end_date = null;
+    existingSubscription.subscription_status = "active";
+    existingSubscription.subscription_type = newPlanId;
+    existingSubscription.trial_days = null;
+    existingSubscription.stripe_price_id = session.id;
+    existingSubscription.amount = newPlanAmount / 100;
+    existingSubscription.subscription_Interval = newPlanInterval;
+    existingSubscription.subscription_start_date = new Date();
+    existingSubscription.subscription_end_date = new Date(
+      Date.now() +
+        (newPlanInterval === "month"
+          ? 30 * 24 * 60 * 60 * 1000
+          : newPlanInterval === "year"
+          ? 365 * 24 * 60 * 60 * 1000
+          : 0)
+    );
+
+    await existingSubscription.save();
+
+    await User.findByIdAndUpdate(req.user._id, {
+      currentSubscription: existingSubscription._id,
+    });
+
+    res.status(200).json({
+      message: "Subscription upgraded successfully",
+      subscription: existingSubscription,
+      session: session.url,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || "Something went wrong",
+    });
+  }
+};
+
+export default { subscriptionCreateStripe, updateSubscription };

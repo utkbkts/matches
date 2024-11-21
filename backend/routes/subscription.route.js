@@ -10,4 +10,10 @@ router.post(
   subscriptionControllers.subscriptionCreateStripe
 );
 
+router.post(
+  "/stripe/premium",
+  isAuthMiddleware,
+  subscriptionControllers.updateSubscription
+);
+
 export default router;

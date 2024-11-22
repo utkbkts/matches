@@ -1,3 +1,4 @@
+import Auth from "@/components/auth/Auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,8 +9,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+
+type AuthType = "signIn" | "signUp" | null;
+
 const UserMenu = () => {
+  const user = false;
+  const [modal, setModal] = useState(false);
+  const [authType, setAuthType] = useState<AuthType>(null);
+
+  const handleModalOpen = (type: any) => {
+    setAuthType(type);
+    setModal(true);
+  };
+
   return (
     <div>
       <DropdownMenu>
@@ -20,24 +34,47 @@ const UserMenu = () => {
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuLabel>
+            {user ? "My Account" : "Please sign in."}
+          </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <Link to={"/user-profile"}>
-            <DropdownMenuItem className="cursor-pointer">
-              Profile
-            </DropdownMenuItem>
-          </Link>
-          <DropdownMenuItem className="cursor-pointer">
-            Billing
-          </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer">Team</DropdownMenuItem>
-          <Button asChild variant={"destructive"} className="w-full">
-            <DropdownMenuItem className="cursor-pointer flex items-center justify-center w-full">
-              Logout
-            </DropdownMenuItem>
-          </Button>
+          {user ? (
+            <div className="flex flex-col gap-4">
+              <Link to={"/user-profile"}>
+                <DropdownMenuItem className="cursor-pointer text-[16px] hover:bg-gray-200">
+                  Profile
+                </DropdownMenuItem>
+              </Link>
+
+              <Button asChild variant={"destructive"} className="w-full">
+                <DropdownMenuItem className="cursor-pointer flex items-center justify-center w-full">
+                  Logout
+                </DropdownMenuItem>
+              </Button>
+            </div>
+          ) : (
+            <React.Fragment>
+              <DropdownMenuItem
+                onClick={() => handleModalOpen("signUp")}
+                className="cursor-pointer text-[16px] hover:bg-gray-200"
+              >
+                Sign Up
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => handleModalOpen("signIn")}
+                className="cursor-pointer text-[16px] hover:bg-gray-200"
+              >
+                Sign In
+              </DropdownMenuItem>
+            </React.Fragment>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
+
+      {/* Modal için */}
+      {modal && (
+        <Auth setAuthType={setAuthType} type={authType} setModal={setModal} />
+      )}
     </div>
   );
 };

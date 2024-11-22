@@ -1,4 +1,4 @@
-import EditProfileInput from "@/components/editProfile/EditProfileInput";
+import EditProfileInput from "@/components/input/EditProfileInput";
 import { Form } from "@/components/ui/form";
 import { EditFormData, editProfileSchema } from "@/schema/edit-profile-schema";
 import { zodResolver } from "@hookform/resolvers/zod";

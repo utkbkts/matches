@@ -23,6 +23,7 @@ const register = async (req, res, next) => {
       gender,
       birthday,
       country,
+      city,
     } = req.body;
 
     const emailExisting = await User.findOne({ email });
@@ -62,6 +63,7 @@ const register = async (req, res, next) => {
       gender,
       birthday,
       country,
+      city,
     });
 
     sendToken(user, 201, res);

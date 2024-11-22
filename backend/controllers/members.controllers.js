@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 import apiFilter from "../utils/api.filters.js";
+
 const memberFilters = async (req, res, next) => {
   try {
     const resPerPage = 5;

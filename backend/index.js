@@ -14,6 +14,7 @@ import { ConnectedDatabase } from "./db/connected.db.js";
 import authRoutes from "./routes/auth.routes.js";
 import subscriptionRoutes from "./routes/subscription.route.js";
 import membersRoutes from "./routes/members.route.js";
+import messagesRoutes from "./routes/message.routes.js";
 
 //path
 const __dirname = path.resolve();
@@ -45,6 +46,7 @@ app.use(
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/subscription", subscriptionRoutes);
 app.use("/api/v1/members", membersRoutes);
+app.use("/api/v1/messages", messagesRoutes);
 
 app.use(errorMiddleware);
 
@@ -55,7 +57,7 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-app.listen(process.env.PORT, () => {
+const server = app.listen(process.env.PORT, () => {
   ConnectedDatabase();
   console.log(`server is running PORT:${process.env.PORT}`);
 });

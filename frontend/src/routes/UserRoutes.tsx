@@ -13,6 +13,8 @@ const PasswordUpdate = lazy(
   () => import("@/pages/profile/partials/dashboard/PasswordUpdate")
 );
 
+const MemberChat = lazy(() => import("@/pages/members/partials/MemberChat"));
+
 export const UserRoutes = {
   path: "/user-profile",
   element: (
@@ -51,6 +53,14 @@ export const UserRoutes = {
       element: (
         <Suspense fallback={<Loading />}>
           <UpdatePackage />
+        </Suspense>
+      ),
+    },
+    {
+      path: "chats",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <MemberChat />
         </Suspense>
       ),
     },

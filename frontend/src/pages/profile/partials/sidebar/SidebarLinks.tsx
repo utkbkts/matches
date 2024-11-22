@@ -5,6 +5,7 @@ const menuLinks = [
   { id: 2, title: "Photo Update", href: "/user-profile/photos" },
   { id: 3, title: "Password Update", href: "/user-profile/password" },
   { id: 4, title: "Update Package", href: "/user-profile/package" },
+  { id: 4, title: "Chats", href: "/user-profile/chats" },
 ];
 
 const SidebarLinks = () => {

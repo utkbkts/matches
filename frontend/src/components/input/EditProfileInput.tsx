@@ -15,6 +15,7 @@ interface Props {
   placeholder: string;
   error?: any;
   multiline?: boolean;
+  type?: "text" | "password" | "email";
 }
 
 const EditProfileInput = ({
@@ -24,6 +25,7 @@ const EditProfileInput = ({
   placeholder,
   error,
   multiline,
+  type,
 }: Props) => {
   return (
     <FormField
@@ -41,7 +43,7 @@ const EditProfileInput = ({
                 rows={6}
               />
             ) : (
-              <Input placeholder={placeholder} {...field} />
+              <Input placeholder={placeholder} {...field} type={type} />
             )}
           </FormControl>
           <FormMessage>{error?.message}</FormMessage>
@@ -50,5 +52,5 @@ const EditProfileInput = ({
     />
   );
 };
-
+EditProfileInput.displayName = "EditProfileInput";
 export default EditProfileInput;

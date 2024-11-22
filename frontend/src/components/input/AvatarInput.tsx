@@ -12,9 +12,18 @@ interface Props {
   label: string;
   error?: any;
   className?: string | null;
+  type: "file";
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const AvatarInput = ({ control, name, label, error }: Props) => {
+const AvatarInput = ({
+  control,
+  name,
+  label,
+  error,
+  type,
+  onChange,
+}: Props) => {
   return (
     <FormField
       control={control}
@@ -23,7 +32,7 @@ const AvatarInput = ({ control, name, label, error }: Props) => {
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <FormControl>
-            <Input type="file" {...field} />
+            <Input type={type} {...field} onChange={onChange} />
           </FormControl>
           <FormMessage>{error?.message}</FormMessage>
         </FormItem>

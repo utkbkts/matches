@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -16,6 +16,8 @@ import DatePickerInput from "../input/DatePicker";
 import CountryListInput from "../input/CountryList";
 import AvatarInput from "../input/AvatarInput";
 import { createFormData, createFormSchema } from "@/schema/create-auth-schema";
+import { DropdownMenu } from "../ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
 
 interface AuthProps {
   type: "signIn" | "signUp" | null;
@@ -25,23 +27,31 @@ interface AuthProps {
 const Auth = ({ type, setModal }: AuthProps) => {
   const handleClose = () => setModal(false);
   return (
-    <Dialog open onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>{type === "signUp" ? "Sign Up" : "Sign In"}</DialogTitle>
-          <DialogDescription>
-            {type === "signUp"
-              ? "Create a new account."
-              : "Sign in to your account."}
-          </DialogDescription>
-        </DialogHeader>
-        <div>{type === "signIn" ? Login() : Register()}</div>
-      </DialogContent>
-    </Dialog>
+    <div>
+      <Dialog open onOpenChange={handleClose}>
+        <DropdownMenu modal={false}>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>
+                {type === "signUp" ? "Sign Up" : "Sign In"}
+              </DialogTitle>
+              <DialogDescription>
+                {type === "signUp"
+                  ? "Create a new account."
+                  : "Sign in to your account."}
+              </DialogDescription>
+            </DialogHeader>
+
+            <div>{type === "signIn" ? <Login /> : <Register />}</div>
+          </DialogContent>
+        </DropdownMenu>
+      </Dialog>
+    </div>
   );
 };
-
 function Register() {
+  const [image, setImage] = useState<string>("");
+  const [error, setError] = useState(false);
   const form = useForm<createFormData>({
     resolver: zodResolver(createFormSchema),
     defaultValues: {
@@ -59,8 +69,26 @@ function Register() {
     mode: "onChange",
   });
 
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const maxSize = 2 * 1024 * 1024;
+
+    if (file.size > maxSize) {
+      return setError(true);
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImage(reader.result as string);
+    };
+    setError(false);
+    reader.readAsDataURL(file);
+  };
+
   const onSubmit = async (data: createFormData) => {
-    console.log(data);
+    console.log({ ...data, picture: image });
   };
   return (
     <div>
@@ -72,6 +100,7 @@ function Register() {
               error={form.formState.errors.name}
               name="name"
               placeholder="Name"
+              type="text"
               label="Name"
             />
             <EditProfileInput
@@ -79,6 +108,7 @@ function Register() {
               error={form.formState.errors.email}
               name="email"
               placeholder="Email"
+              type="email"
               label="Email"
             />
           </div>
@@ -88,12 +118,14 @@ function Register() {
               error={form.formState.errors.password}
               name="password"
               placeholder="Password"
+              type="password"
               label="Password"
             />
             <EditProfileInput
               control={form.control}
               error={form.formState.errors.confirmPassword}
               name="confirmPassword"
+              type="password"
               placeholder="ConfirmPassword"
               label="ConfirmPassword"
             />
@@ -135,6 +167,7 @@ function Register() {
               error={form.formState.errors.city}
               name="city"
               placeholder="City"
+              type="text"
               label="City"
             />
           </div>
@@ -144,6 +177,7 @@ function Register() {
             name="status"
             placeholder="Status(optional)"
             label="Status(optional)"
+            type="text"
           />
           <div>
             <AvatarInput
@@ -151,8 +185,34 @@ function Register() {
               error={form.formState.errors.picture}
               name="picture"
               label="Avatar"
+              type="file"
+              onChange={handleImageChange}
             />
           </div>
+          {image ? (
+            <div className="relative w-32 h-32">
+              <img
+                src={image}
+                alt="image"
+                title="avatar profile picture"
+                className="w-32 h-32 rounded-full object-cover"
+              />
+              <Badge
+                onClick={() => setImage("")}
+                variant="outline"
+                className="cursor-pointer hover:bg-gray-400 bg-gray-200 absolute top-0 right-0"
+              >
+                X
+              </Badge>
+            </div>
+          ) : null}
+          {error && (
+            <div className="bg-destructive p-2 rounded-md w-full">
+              <span className="text-sm  text-white flex items-center justify-center">
+                Something went wrong !!
+              </span>
+            </div>
+          )}
           <div className="w-full flex items-center justify-end">
             <Button type="submit">Create Account</Button>
           </div>

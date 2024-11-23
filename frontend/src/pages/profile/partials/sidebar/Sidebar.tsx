@@ -1,17 +1,20 @@
 import { Separator } from "@/components/ui/separator";
 import SidebarLinks from "./SidebarLinks";
+import { useGetUserQuery } from "@/store/api/user-api";
 
 const Sidebar = () => {
+  const { data } = useGetUserQuery("");
   return (
     <div className="h-[80vh] p-8">
       <div className="flex flex-col items-center justify-center">
         <img
-          src="/images/f1.jpg"
+          src={data?.picture?.url}
           alt=""
           className="w-32 h-32 rounded-full object-cover"
         />
-        <span>Utku Bektasoglu</span>
-        <span>utku@gmail.com</span>
+        <span>{data?.name}</span>
+        <span>{data?.email}</span>
+        <p className="text-center text-muted-foreground">{data?.status}</p>
       </div>
       <Separator />
       <div>

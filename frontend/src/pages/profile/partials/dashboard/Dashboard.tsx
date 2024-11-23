@@ -1,10 +1,13 @@
 import EditProfileInput from "@/components/input/EditProfileInput";
 import { Form } from "@/components/ui/form";
 import { EditFormData, editProfileSchema } from "@/schema/edit-profile-schema";
+import { useGetUserQuery } from "@/store/api/user-api";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 const Dashboard = () => {
+  const { data: getUser } = useGetUserQuery("");
   const form = useForm<EditFormData>({
     resolver: zodResolver(editProfileSchema),
     defaultValues: {
@@ -15,6 +18,15 @@ const Dashboard = () => {
     },
     mode: "onChange",
   });
+
+  useEffect(() => {
+    if (getUser) {
+      form.setValue("name", getUser.name);
+      form.setValue("description", getUser.status);
+      form.setValue("city", getUser.city);
+      form.setValue("country", getUser.country);
+    }
+  }, [getUser, form]);
 
   const onSubmit = async (data: EditFormData) => {
     console.log(data);

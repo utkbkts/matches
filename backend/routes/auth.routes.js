@@ -9,6 +9,9 @@ router.post("/register", authControllers.register);
 router.post("/login", authControllers.login);
 
 router.post("/logout", authControllers.logout);
+
+router.get("/me", isAuthMiddleware, authControllers.me);
+
 //liked
 router.put("/liked/:id", isAuthMiddleware, authControllers.liked);
 //profile update
@@ -19,5 +22,7 @@ router.put(
   isAuthMiddleware,
   authControllers.passwordUpdate
 );
+
+router.put("/photo/update", isAuthMiddleware, authControllers.updatePhoto);
 
 export default router;

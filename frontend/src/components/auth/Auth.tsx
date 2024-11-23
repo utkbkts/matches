@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -18,6 +18,8 @@ import AvatarInput from "../input/AvatarInput";
 import { createFormData, createFormSchema } from "@/schema/create-auth-schema";
 import { DropdownMenu } from "../ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
+import { useRegisterMutation } from "@/store/api/user-api";
+import { getErrorMessage } from "@/helpers/error-message";
 
 interface AuthProps {
   type: "signIn" | "signUp" | null;
@@ -42,16 +44,24 @@ const Auth = ({ type, setModal }: AuthProps) => {
               </DialogDescription>
             </DialogHeader>
 
-            <div>{type === "signIn" ? <Login /> : <Register />}</div>
+            <div>
+              {type === "signIn" ? <Login /> : <Register setModal={setModal} />}
+            </div>
           </DialogContent>
         </DropdownMenu>
       </Dialog>
     </div>
   );
 };
-function Register() {
+function Register({ setModal }: any) {
   const [image, setImage] = useState<string>("");
   const [error, setError] = useState(false);
+  const [errorData, setErrorData] = useState("");
+  const [
+    createRegister,
+    { error: registerError, isError, isSuccess, isLoading },
+  ] = useRegisterMutation();
+
   const form = useForm<createFormData>({
     resolver: zodResolver(createFormSchema),
     defaultValues: {
@@ -87,8 +97,26 @@ function Register() {
     reader.readAsDataURL(file);
   };
 
+  useEffect(() => {
+    if (isError) {
+      const errorMessage = getErrorMessage(registerError);
+      if (errorMessage) {
+        setErrorData(errorMessage);
+        setError(true);
+      }
+    }
+    if (isSuccess) {
+      setErrorData("Create account successfully !!");
+      setError(true);
+      setTimeout(() => {
+        setModal(false);
+        form.reset();
+      }, 1000);
+    }
+  }, [isSuccess, isError, registerError, form]);
+
   const onSubmit = async (data: createFormData) => {
-    console.log({ ...data, picture: image });
+    await createRegister({ ...data, picture: image });
   };
   return (
     <div>
@@ -207,14 +235,20 @@ function Register() {
             </div>
           ) : null}
           {error && (
-            <div className="bg-destructive p-2 rounded-md w-full">
+            <div
+              className={`${
+                isSuccess ? "bg-green-400" : "bg-destructive"
+              } p-2 rounded-md w-full`}
+            >
               <span className="text-sm  text-white flex items-center justify-center">
-                Something went wrong !!
+                {errorData}
               </span>
             </div>
           )}
           <div className="w-full flex items-center justify-end">
-            <Button type="submit">Create Account</Button>
+            <Button loading={isLoading} type="submit">
+              Create Account
+            </Button>
           </div>
         </form>
       </Form>

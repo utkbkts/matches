@@ -26,3 +26,8 @@ export const upload_file = async (file, folder) => {
     throw new Error(`Cloudinary upload failed: ${error.message}`);
   }
 };
+
+export const delete_file = async (file) => {
+  const res = await cloudinary.v2.uploader.destroy(file);
+  if (res?.result === "ok") return true;
+};

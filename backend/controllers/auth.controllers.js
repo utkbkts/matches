@@ -3,6 +3,7 @@ import ErrorHandler from "../utils/error.handler.js";
 import cloudinary from "cloudinary";
 import sendToken from "../utils/send.token.js";
 import dotenv from "dotenv";
+import { delete_file, upload_file } from "../utils/upload.file.js";
 dotenv.config();
 
 cloudinary.v2.config({
@@ -166,17 +167,23 @@ const updatePhoto = async (req, res, next) => {
     }
 
     let pictureData = {};
+    let oldPictureId;
+    //önceki resim kontrolü
+    const user = await User.findById(req.user._id);
+    if (user && user.picture) {
+      oldPictureId = user.picture.public_id;
+    }
     try {
-      const avatarUpload = await upload_file(picture, "matches");
+      const avatarUpload = await upload_file(picture, "match/avatar");
       pictureData = {
         public_id: avatarUpload.public_id,
-        url: avatarUpload.secure_url,
+        url: avatarUpload.url,
       };
-    } catch (uploadError) {
+    } catch (error) {
       return next(new ErrorHandler("Photo upload failed", 500));
     }
 
-    const user = await User.findByIdAndUpdate(
+    const updatedUser = await User.findByIdAndUpdate(
       req.user._id,
       { picture: pictureData },
       {
@@ -184,16 +191,19 @@ const updatePhoto = async (req, res, next) => {
         runValidators: true,
       }
     );
-
-    if (!user) {
+    if (!updatedUser) {
       return next(new ErrorHandler("User not found", 404));
     }
-    return res.status(200).json({
-      message: "Photo updated successfully",
-      user,
+
+    if (oldPictureId) {
+      await delete_file(oldPictureId);
+    }
+
+    res.status(201).json({
+      message: "The photo has been updated successfully.",
     });
   } catch (err) {
-    return next(err);
+    return next(new ErrorHandler("Something went wrong !!", 500));
   }
 };
 
@@ -222,6 +232,24 @@ const passwordUpdate = async (req, res, next) => {
   }
 };
 
+const me = async (req, res, next) => {
+  const userId = req.user._id;
+
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return next(new ErrorHandler("User not found", 404));
+    }
+
+    res.status(200).json({
+      user,
+    });
+  } catch (error) {
+    return next(new ErrorHandler("something went wrong !!", 400));
+  }
+};
+
 export default {
   register,
   login,
@@ -230,4 +258,5 @@ export default {
   updateProfile,
   passwordUpdate,
   updatePhoto,
+  me,
 };

@@ -5,7 +5,7 @@ import { membersData } from "../members/Members";
 import PaginationItems from "./partials/PaginationItems";
 import { useSearchParams } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
-import calculateAge from "@/helpers/dateFormat";
+import calculateAge from "@/helpers/date-format";
 import AgeRange from "./partials/AgeRange";
 import LocationOrder from "./partials/LocationOrder";
 import MobileTopBar from "./partials/MobileTopBar";

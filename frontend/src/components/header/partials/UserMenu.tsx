@@ -1,5 +1,5 @@
 import Auth from "@/components/auth/Auth";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -9,16 +9,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAppSelector } from "@/store/hooks";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 type AuthType = "signIn" | "signUp" | null;
 
 const UserMenu = () => {
-  const user = false;
   const [modal, setModal] = useState(false);
   const [authType, setAuthType] = useState<AuthType>(null);
-
+  const { user } = useAppSelector((state) => state.auth);
   const handleModalOpen = (type: any) => {
     setAuthType(type);
     setModal(true);
@@ -29,13 +29,12 @@ const UserMenu = () => {
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="cursor-pointer">
           <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarImage src={user?.picture?.url} />
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuLabel>
-            {user ? "My Account" : "Please sign in."}
+            {user ? user?.email : "Please sign in."}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           {user ? (

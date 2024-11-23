@@ -1,4 +1,4 @@
-import calculateAge from "@/helpers/dateFormat";
+import calculateAge from "@/helpers/date-format";
 import { MembersType } from "@/types/types";
 import { Heart } from "lucide-react";
 import { Link } from "react-router-dom";

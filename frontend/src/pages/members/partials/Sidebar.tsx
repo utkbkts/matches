@@ -1,6 +1,6 @@
 import { Link, useLocation, useParams } from "react-router-dom";
 import { membersData } from "../Members";
-import calculateAge from "@/helpers/dateFormat";
+import calculateAge from "@/helpers/date-format";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 

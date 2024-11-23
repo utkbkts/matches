@@ -116,7 +116,7 @@ function Register({ setModal }: any) {
   }, [isSuccess, isError, registerError, form]);
 
   const onSubmit = async (data: createFormData) => {
-    await createRegister({ ...data, picture: image });
+    await createRegister(data);
   };
   return (
     <div>

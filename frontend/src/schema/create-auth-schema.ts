@@ -38,7 +38,8 @@ const genderString = z.enum(["male", "female"], {
 });
 
 //COUNTRY
-const countryCodes = Object.keys(countries);
+const countryCodes = Object.values(countries).map((item) => item.name);
+console.log("🚀 ~ countryCodes:", countryCodes);
 
 const countryString = z.enum(countryCodes as any, {
   required_error: "Country is required",

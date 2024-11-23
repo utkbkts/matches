@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useLogoutMutation } from "@/store/api/user-api";
 import { useAppSelector } from "@/store/hooks";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
@@ -19,6 +20,7 @@ const UserMenu = () => {
   const [modal, setModal] = useState(false);
   const [authType, setAuthType] = useState<AuthType>(null);
   const { user } = useAppSelector((state) => state.auth);
+  const [logout] = useLogoutMutation();
   const handleModalOpen = (type: any) => {
     setAuthType(type);
     setModal(true);
@@ -29,7 +31,9 @@ const UserMenu = () => {
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="cursor-pointer">
           <Avatar>
-            <AvatarImage src={user?.picture?.url} />
+            <AvatarImage
+              src={user?.picture?.url || "https://github.com/shadcn.png"}
+            />
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
@@ -45,7 +49,12 @@ const UserMenu = () => {
                 </DropdownMenuItem>
               </Link>
 
-              <Button asChild variant={"destructive"} className="w-full">
+              <Button
+                onClick={logout}
+                asChild
+                variant={"destructive"}
+                className="w-full"
+              >
                 <DropdownMenuItem className="cursor-pointer flex items-center justify-center w-full">
                   Logout
                 </DropdownMenuItem>

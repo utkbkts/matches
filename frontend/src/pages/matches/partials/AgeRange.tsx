@@ -7,27 +7,16 @@ const AgeRange = ({ handleAgeRange }: Props) => {
   const [minAge, setMinAge] = useState(18);
   const [maxAge, setMaxAge] = useState(50);
 
-  // Handle the change in either min or max age slider
   const handleRangeChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     type: "min" | "max"
   ) => {
-    const value = Number(e.target.value);
-
-    // If the user changes the min value
     if (type === "min") {
-      // Min value should not be greater than max value
-      if (value <= maxAge) {
-        setMinAge(value); // Update min age in state
-        handleAgeRange(value, maxAge); // Pass updated minAge and maxAge to parent
-      }
+      setMinAge(Number(e.target.value));
     } else {
-      // If the user changes the max value
-      if (value >= minAge) {
-        setMaxAge(value); // Update max age in state
-        handleAgeRange(minAge, value); // Pass updated minAge and maxAge to parent
-      }
+      setMaxAge(Number(e.target.value));
     }
+    handleAgeRange(minAge, maxAge);
   };
 
   return (

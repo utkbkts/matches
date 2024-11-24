@@ -13,3 +13,24 @@ export type SignupType = {
   gender: string;
   birthday: string;
 };
+
+export type MembersType = {
+  birthday: string;
+  city: string;
+  country: string;
+  createdAt: string;
+  currentSubscription: string | null;
+  email: string;
+  gender: string;
+  liked: any[];
+  likedCount: number;
+  myFavorite: any[];
+  name: string;
+  picture: {
+    public_id: string;
+    url: string;
+  };
+  status: string;
+  updatedAt: string;
+  _id: string;
+};

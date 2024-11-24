@@ -19,7 +19,6 @@ class apiFilter {
     const queryCopy = { ...this.queryStr };
     const fieldsToRemove = ["search", "page"];
     fieldsToRemove.forEach((field) => delete queryCopy[field]);
-
     let queryStr = JSON.stringify(queryCopy);
     queryStr = queryStr.replace(
       /\b(gt|gte|lt|lte|eq)\b/g,

@@ -5,3 +5,9 @@ const calculateAge = (dateOfBirth: string): number => {
 };
 
 export default calculateAge;
+
+export const getAgeDate = (age: any) => {
+  const date = new Date();
+  date.setFullYear(date.getFullYear() - age);
+  return date.toISOString();
+};

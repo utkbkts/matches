@@ -1,97 +1,51 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import MatchesItems from "./partials/MatchesItems";
-import { membersData } from "../members/Members";
 import PaginationItems from "./partials/PaginationItems";
 import { useSearchParams } from "react-router-dom";
 import { Separator } from "@/components/ui/separator";
-import calculateAge from "@/helpers/date-format";
 import AgeRange from "./partials/AgeRange";
 import LocationOrder from "./partials/LocationOrder";
 import MobileTopBar from "./partials/MobileTopBar";
+import { useGetAllMembersQuery } from "@/store/api/member-api";
+import { MembersType } from "@/types/types";
 
 const FilterSection = () => {
-  const [isOn, setIsOn] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
   const [searchParams, setSearchParams] = useSearchParams();
+  const [currentPage, setCurrentPage] = useState(1);
+  const page = searchParams.get("page") || "1";
+  const search = searchParams.get("query") || "";
+  const minAge = searchParams.get("min") || "18";
+  const maxAge = searchParams.get("max") || "50";
+  const gender = searchParams.get("gender") || "";
 
-  //pagination logic
-  const lastItemsIndex = currentPage * itemsPerPage;
-  const firstItemsIndex = lastItemsIndex - itemsPerPage;
-
-  // Get search parameters (gender, minAge, maxAge)
-  const gender = searchParams.get("gender");
-  const minAge = Number(searchParams.get("minAge")) || 18; // Default to 18 if not set
-  const maxAge = Number(searchParams.get("maxAge")) || 50; // Default to 50 if not set
-  const withImage = searchParams.get("withImage");
-
-  const location = searchParams.get("location")?.toLowerCase() || "";
-
-  // Filter members based on `isActive` and `gender` criteria
-  const filteredMembers = membersData.filter(
-    (item) =>
-      item.isActive === true &&
-      (!gender || item.gender === gender) &&
-      calculateAge(item.dateOfBirth) >= minAge &&
-      calculateAge(item.dateOfBirth) <= maxAge &&
-      (withImage === "true" ? item.image : true) &&
-      (!location || item.country.toLowerCase().includes(location))
-  );
-  const currentItems = filteredMembers.slice(firstItemsIndex, lastItemsIndex);
-  //searchParams Logic
-
-  useEffect(() => {
-    const pageParam = searchParams.get("page");
-    if (pageParam) {
-      setCurrentPage(Number(pageParam));
-    }
-  }, [searchParams]);
-
-  const updatePage = (page: number) => {
-    setCurrentPage(page);
-    setSearchParams({
-      page: page.toString(),
-      minAge: minAge.toString(),
-      maxAge: maxAge.toString(),
-      withImage: withImage || "true",
-      location: location,
-    });
+  const params = {
+    page,
+    search,
+    minAge,
+    maxAge,
+    gender,
   };
 
-  const toggleSwitch = () => {
-    setIsOn(!isOn);
+  const { data } = useGetAllMembersQuery(params);
+  // Handle gender filter
+  const handleGenderChange = (selectedGender: string) => {
     setCurrentPage(1);
     setSearchParams({
       page: "1",
-      withImage: !isOn ? "true" : "false",
-      minAge: minAge.toString(),
-      maxAge: maxAge.toString(),
+      gender: selectedGender,
+      min: minAge.toString(),
+      max: maxAge.toString(),
     });
   };
-  //result count
-  const resultCount = filteredMembers.length;
-  //gender selection filter
-  const handleToggleGender = (gender: string) => {
-    setCurrentPage(1);
-    setSearchParams({ page: "1", gender });
-  };
-
-  // Handle age range filter changes
-  const handleAgeRange = (minAge: number, maxAge: number) => {
+  //handle Age Filter
+  const handleAgeRange = (minAge: any, maxAge: any) => {
     setCurrentPage(1);
     setSearchParams({
       page: "1",
-      minAge: minAge.toString(),
-      maxAge: maxAge.toString(),
-    });
-  };
-
-  const handleSearch = (location: string) => {
-    setCurrentPage(1);
-    setSearchParams({
-      page: "1",
-      location: location,
+      min: minAge,
+      max: maxAge,
+      gender: gender,
     });
   };
 
@@ -99,43 +53,26 @@ const FilterSection = () => {
     <div className="w-full">
       <div className="shadow-xl w-full p-6 bg-white rounded-xl">
         <div className="xl:flex hidden items-center justify-between gap-6">
-          <h1 className="font-bold text-gray-800 text-3xl">
-            Results: {resultCount}
-          </h1>
+          <h1 className="font-bold text-gray-800 text-3xl">Results: 2</h1>
           {/* Gender Selection */}
           <div className="flex items-center gap-4">
             <h1 className="font-bold text-xl text-black/80">Gender:</h1>
             <div className="flex items-center gap-3">
               <img
-                onClick={() => handleToggleGender("female")}
+                onClick={() => handleGenderChange("female")}
                 src="/Female.svg"
                 alt="Female"
                 className="w-8 h-8 cursor-pointer transition-transform transform hover:scale-110 bg-gray-200 rounded-xl p-1"
               />
               <img
-                onClick={() => handleToggleGender("male")}
+                onClick={() => handleGenderChange("male")}
                 src="/Male.svg"
                 alt="Male"
                 className="w-8 h-8 cursor-pointer transition-transform transform hover:scale-110 bg-gray-200 rounded-xl p-1"
               />
             </div>
           </div>
-          {/* With Range Toggle */}
-          <div className="flex items-center gap-4">
-            <span className="text-gray-600">With Photo</span>
-            <div className="relative">
-              <button
-                onClick={toggleSwitch}
-                className={`w-16 h-8 flex items-center rounded-full p-1 cursor-pointer 
-                ${isOn ? " bg-green-500" : " bg-gray-300"}`}
-              >
-                <div
-                  className={`w-6 h-6 bg-white rounded-full shadow-md transform transition-all 
-                  ${isOn ? "translate-x-8" : "translate-x-0"}`}
-                />
-              </button>
-            </div>
-          </div>
+
           {/* Age Range */}
           <div className="flex  flex-col    gap-3">
             <AgeRange handleAgeRange={handleAgeRange} />
@@ -143,7 +80,7 @@ const FilterSection = () => {
 
           {/* Order By Select */}
           <div className="w-[220px]">
-            <LocationOrder handleSearch={handleSearch} />
+            <LocationOrder />
           </div>
         </div>
         <div className="xl:hidden block">
@@ -151,8 +88,8 @@ const FilterSection = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 container mx-auto place-items-center">
-        {currentItems.map((member, index) => (
-          <MatchesItems key={index} member={member} />
+        {data?.users?.map((member: MembersType) => (
+          <MatchesItems member={member} key={member._id} />
         ))}
       </div>
       <div className="mt-12 container mx-auto w-full ">
@@ -162,18 +99,17 @@ const FilterSection = () => {
             <h1 className="text-muted-foreground text-md">
               Showing{" "}
               {Math.min(
-                (currentPage - 1) * itemsPerPage + 1,
-                membersData.length
+                (currentPage - 1) * data?.resPerPage + 1,
+                data?.totalCount
               )}
-              –{Math.min(currentPage * itemsPerPage, membersData.length)} of{" "}
-              {membersData.length} results
+              –{Math.min(currentPage * data?.resPerPage, data?.totalCount)} of{" "}
+              {data?.totalCount} results
             </h1>
           </div>
           <PaginationItems
-            totalItems={filteredMembers.length}
-            itemsPerPage={itemsPerPage}
+            totalItems={2}
+            itemsPerPage={data?.resPerPage}
             currentPage={currentPage}
-            setCurrentPage={updatePage}
           />
         </div>
       </div>

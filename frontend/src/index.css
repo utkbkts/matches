@@ -18,6 +18,8 @@
     --accent: 240 4.8% 95.9%;
     --accent-foreground: 240 5.9% 10%;
     --destructive: 0 92.2% 70.2%;
+    --red: 321 78% 65%;
+    --red-foreground: 321 86% 57%;
     --destructive-foreground: 0 0% 98%;
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
@@ -45,6 +47,7 @@
     --accent: 240 3.7% 15.9%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
+    --red-foreground: 321 86% 57%;
     --destructive-foreground: 0 0% 98%;
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
@@ -111,4 +114,50 @@
   background: #17a288;
   border-radius: 50%;
   z-index: 3; /* Same for Firefox */
+}
+
+/* animate img */
+.animate-img {
+  animation: imageBounce 2s infinite;
+}
+@keyframes imageBounce {
+  0% {
+    transform: translateY(-10px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}
+
+/* slider section */
+@keyframes scrollUp {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-60%);
+  }
+}
+
+.animate-scrollUp {
+  animation: scrollUp 70s linear infinite;
+}
+
+/* quipi */
+.quipit {
+  position: relative;
+}
+.quipit::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  height: 17px;
+  width: 100%;
+  border-top: solid 2px;
+  border-radius: 76%;
+  color: #cb136c;
 }

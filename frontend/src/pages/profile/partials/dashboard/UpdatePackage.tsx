@@ -1,14 +1,29 @@
 import CardPackage from "@/components/cardPackage/CardPackage";
 import CircularProgressBar from "@/components/circleBar/CircleProgress";
+import { Check } from "lucide-react";
 import { useState } from "react";
 
-const cardPackageData = [
+export const cardPackageData = [
   {
     id: 1,
     title: "Silver",
     price: 40,
     duration: 30,
     description: "Silver package",
+    features: [
+      {
+        icon: <Check className="w-7 h-7 text-green-400" />,
+        message: "Sınırsız Mesajlaşma",
+      },
+      {
+        icon: <Check className="w-7 h-7 text-green-400" />,
+        message: "Gelişmiş Destek",
+      },
+      {
+        icon: <Check className="w-7 h-7 text-green-400" />,
+        message: "Özel Profil Özellikleri",
+      },
+    ],
   },
   {
     id: 2,
@@ -16,13 +31,41 @@ const cardPackageData = [
     price: 70,
     duration: 60,
     description: "Platinum package",
+    features: [
+      {
+        icon: <Check className="w-7 h-7 text-green-400" />,
+        message: "Sınırsız Mesajlaşma",
+      },
+      {
+        icon: <Check className="w-7 h-7 text-green-400" />,
+        message: "VIP Destek",
+      },
+      {
+        icon: <Check className="w-7 h-7 text-green-400" />,
+        message: "Yüksek Kalitede Eşleşmeler",
+      },
+    ],
   },
   {
     id: 3,
     title: "Gold",
     price: 99,
-    duration: 365,
+    duration: 90,
     description: "Gold package",
+    features: [
+      {
+        icon: <Check className="w-7 h-7 text-green-400" />,
+        message: "Sınırsız Mesajlaşma",
+      },
+      {
+        icon: <Check className="w-7 h-7 text-green-400" />,
+        message: "Özel Danışmanlık",
+      },
+      {
+        icon: <Check className="w-7 h-7 text-green-400" />,
+        message: "Gelişmiş Arama Filtreleri",
+      },
+    ],
   },
 ];
 

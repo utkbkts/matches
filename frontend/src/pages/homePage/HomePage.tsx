@@ -1,13 +1,19 @@
-import { Button } from "@/components/ui/button";
+import CardPackage from "@/components/cardPackage/CardPackage";
 import { Separator } from "@/components/ui/separator";
-import { Check, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
+import { cardPackageData } from "../profile/partials/dashboard/UpdatePackage";
+import SectionAbout from "./partials/SectionAbout";
+import avatar from "/avatar/Explore-Image.png";
+import SectionCustomer from "./partials/SectionCustomer";
+import { customerData } from "./data/index-data";
+import SectionSlider from "./partials/SectionSlider";
 const images = [
-  "/slider/slider-1.jpg",
   "/slider/slider-2.jpg",
-  "/slider/slider-3.jpg",
   "/slider/slider-4.jpg",
   "/slider/slider-5.jpg",
+  "/slider/slider-6.jpg",
+  "/slider/slider-7.jpg",
 ];
 
 const HomePage = () => {
@@ -28,7 +34,8 @@ const HomePage = () => {
     return () => clearInterval(interval);
   }, [current]);
   return (
-    <div className="w-full relative select-none">
+    <div className="w-full relative  select-none">
+      {/* HERO */}
       <div className=" relative">
         <div
           className="absolute top-1/2 left-0 w-10 bg-black/80 text-white cursor-pointer hover:w-12 transition-all duration-300 flex items-center justify-center"
@@ -40,7 +47,7 @@ const HomePage = () => {
           src={images[current]}
           alt="image-couple"
           title="couple"
-          className="object-cover h-[600px] w-full"
+          className="object-cover h-[600px] w-full bg-fixed bg-center"
         />
         <div
           className="absolute top-1/2 right-0 w-10 bg-black/80 text-white cursor-pointer hover:w-12 transition-all duration-300 flex items-center justify-center"
@@ -48,10 +55,36 @@ const HomePage = () => {
         >
           <ChevronRight size={40} />
         </div>
+        <div className="bg-[#ED147D] w-full absolute bottom-0 h-[10vh]">
+          <div className="flex items-center justify-between h-full container mx-auto">
+            <div>
+              <img src={avatar} alt="avatar" className="animate-img" />
+            </div>
+            <div className="flex flex-col items-center pr-24">
+              <h1 className="text-white font-bold text-[35px]">
+                Start your love story
+              </h1>
+              <span className="font-semibold text-white">
+                Find love with our dating site !
+              </span>
+            </div>
+            <div>
+              <button className="text-[#ED147D] font-semibold px-8 py-3 rounded-full bg-white hover:bg-gray-100">
+                Find Love Now
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* SECTION ABOUT*/}
       <div className="container mx-auto">
-        {" "}
-        <div className="min-h-screen">
+        <section className="h-[70vh]">
+          <SectionAbout />
+        </section>
+
+        {/* SECTION IMAGE*/}
+        <section className="min-h-screen">
           <div className="relative isolate">
             <div
               aria-hidden="true"
@@ -95,9 +128,10 @@ const HomePage = () => {
               />
             </div>
           </div>
-        </div>
-        {/* FEATURES */}
-        <div className="mt-24 min-h-screen">
+        </section>
+
+        {/*SECTION FEATURES */}
+        <section className="mt-24 h-[80vh]">
           <div className="flex flex-col items-center">
             <h1 className="text-center text-4xl font-bold bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] bg-clip-text text-transparent h-12">
               You can get more message rights by becoming Premium.
@@ -108,116 +142,39 @@ const HomePage = () => {
             <Separator />
           </div>
           <div className="grid grid-cols-3 mt-12 gap-4">
-            <div className="border border-gray-200 h-[400px] p-6">
-              <div className="flex flex-col items-center justify-center">
-                <h1 className="font-bold text-2xl">Basic</h1>
-                <span className="text-6xl font-bold">
-                  $29{" "}
-                  <span className="text-muted-foreground text-sm font-normal">
-                    /month
-                  </span>
-                </span>
-              </div>
-              <div className="mt-4 flex flex-col gap-4">
-                <div className="flex items-center">
-                  <Check className="text-green-500" />
-                  <span>Unlimited messages</span>
-                </div>
-                <div className="flex items-center">
-                  <Check className="text-green-500" />
-                  <span>Access to basic features</span>
-                </div>
-                <div className="flex items-center">
-                  <Check className="text-green-500" />
-                  <span>1 GB cloud storage</span>
-                </div>
-                <div className="flex items-center">
-                  <Check className="text-green-500" />
-                  <span>Basic customer support</span>
-                </div>
-                <div className="flex items-center">
-                  <Check className="text-green-500" />
-                  <span>Weekly updates</span>
-                </div>
-              </div>
-              <div className="flex items-center justify-center w-full pt-4">
-                <Button>Buy Now</Button>
-              </div>
-            </div>
-            <div className="border border-gray-200 h-[400px] ring-4 scale-110 ring-inset ring-gray-900/10 p-6">
-              <div className="flex flex-col items-center justify-center">
-                <h1 className="font-bold text-2xl">Standard</h1>
-                <span className="text-6xl font-bold">
-                  $49{" "}
-                  <span className="text-muted-foreground text-sm font-normal">
-                    /month
-                  </span>
-                </span>
-              </div>
-              <div className="mt-4 flex flex-col gap-4">
-                <div className="flex items-center">
-                  <Check className="text-green-500" />
-                  <span>Unlimited messages</span>
-                </div>
-                <div className="flex items-center">
-                  <Check className="text-green-500" />
-                  <span>Access to standard features</span>
-                </div>
-                <div className="flex items-center">
-                  <Check className="text-green-500" />
-                  <span>5 GB cloud storage</span>
-                </div>
-                <div className="flex items-center">
-                  <Check className="text-green-500" />
-                  <span>Priority customer support</span>
-                </div>
-                <div className="flex items-center">
-                  <Check className="text-green-500" />
-                  <span>Daily updates</span>
-                </div>
-              </div>
-              <div className="flex items-center justify-center w-full pt-4">
-                <Button>Buy Now</Button>
-              </div>
-            </div>
-            <div className="border border-gray-200 h-[400px] p-6">
-              <div className="flex flex-col items-center justify-center">
-                <h1 className="font-bold text-2xl">Premium</h1>
-                <span className="text-6xl font-bold">
-                  $79{" "}
-                  <span className="text-muted-foreground text-sm font-normal">
-                    /month
-                  </span>
-                </span>
-              </div>
-              <div className="mt-4 flex flex-col gap-4">
-                <div className="flex items-center">
-                  <Check className="text-green-500" />
-                  <span>Unlimited messages</span>
-                </div>
-                <div className="flex items-center">
-                  <Check className="text-green-500" />
-                  <span>Access to all features</span>
-                </div>
-                <div className="flex items-center">
-                  <Check className="text-green-500" />
-                  <span>Unlimited cloud storage</span>
-                </div>
-                <div className="flex items-center">
-                  <Check className="text-green-500" />
-                  <span>24/7 premium support</span>
-                </div>
-                <div className="flex items-center">
-                  <Check className="text-green-500" />
-                  <span>Real-time updates</span>
-                </div>
-              </div>
-              <div className="flex items-center justify-center w-full pt-4">
-                <Button>Buy Now</Button>
-              </div>
+            {cardPackageData.map((packageData) => (
+              <CardPackage packageData={packageData} />
+            ))}
+          </div>
+        </section>
+        {/*SECTION CUSTOMER */}
+        <section className="mt-24 grid grid-cols-4 gap-2">
+          {customerData.map((item) => (
+            <SectionCustomer key={item.id} customer={item} />
+          ))}
+        </section>
+
+        {/*SECTION SLIDER */}
+        <section className="mt-24 h-[50vh] grid-cols-4 grid overflow-hidden mb-12 relative">
+          <SectionSlider />
+          <SectionSlider />
+          <SectionSlider />
+          <SectionSlider />
+          {/* Overlay with text centered */}
+          <div className="absolute flex items-center justify-center z-50 inset-0 ">
+            <div className="flex items-center flex-col gap-4 text-white text-center">
+              <h2 className="text-4xl font-bold">
+                They Met On <span className="quipit">Quipid !</span>
+              </h2>
+              <p className="mt-2 text-lg w-[600px]">
+                We’re incredibly happy & proud to have sparked thousands of
+                encounters & beautiful love stories. So please share your story
+                with us! We need our a daily love fix.
+              </p>
+              <button className="bg-[#CB136C] py-2 px-4">Coming Soon</button>
             </div>
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );

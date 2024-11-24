@@ -39,6 +39,11 @@ export default {
           dark: "hsl(var(--destructive-foreground))",
           foreground: "hsl(var(--destructive-foreground))",
         },
+        red: {
+          DEFAULT: "hsl(var(--red))",
+          dark: "hsl(var(--red-foreground))",
+          foreground: "hsl(var(--red-foreground))",
+        },
         muted: {
           DEFAULT: "hsl(var(--muted))",
           dark: "hsl(var(--muted-foreground))",
@@ -75,7 +80,7 @@ export default {
       keyframes: {
         "accordion-down": {
           from: {
-            height: "0",
+            bottom: "0",
           },
           to: {
             height: "var(--radix--accordion-content-height)",
@@ -91,8 +96,8 @@ export default {
         },
       },
       animation: {
-        "accordion-down": "accordion-down 0.3s ease-in-out",
-        "accordion-up": "accordion-up 0.3s ease-in-out",
+        "accordion-down": "accordion-down 0.6s ease-out",
+        "accordion-up": "accordion-up 0.6s ease-out",
       },
     },
   },

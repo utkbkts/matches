@@ -1,3 +1,4 @@
+import Footer from "@/components/footer/Footer";
 import Header from "@/components/header/Header";
 import { Outlet } from "react-router-dom";
 
@@ -10,6 +11,9 @@ const MainLayouts = () => {
         </div>
         <div className="flex-grow min-h-screen w-full">
           <Outlet />
+        </div>
+        <div>
+          <Footer />
         </div>
       </div>
     </div>

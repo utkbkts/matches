@@ -15,11 +15,17 @@ import SelectInput from "../input/SelectInput";
 import DatePickerInput from "../input/DatePicker";
 import CountryListInput from "../input/CountryList";
 import AvatarInput from "../input/AvatarInput";
-import { createFormData, createFormSchema } from "@/schema/create-auth-schema";
+import {
+  createDataLogin,
+  createFormData,
+  createFormSchema,
+  createLoginSchema,
+} from "@/schema/create-auth-schema";
 import { DropdownMenu } from "../ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
-import { useRegisterMutation } from "@/store/api/user-api";
+import { useLoginMutation, useRegisterMutation } from "@/store/api/user-api";
 import { getErrorMessage } from "@/helpers/error-message";
+import { toast } from "sonner";
 
 interface AuthProps {
   type: "signIn" | "signUp" | null;
@@ -45,7 +51,11 @@ const Auth = ({ type, setModal }: AuthProps) => {
             </DialogHeader>
 
             <div>
-              {type === "signIn" ? <Login /> : <Register setModal={setModal} />}
+              {type === "signIn" ? (
+                <Login setModal={setModal} />
+              ) : (
+                <Register setModal={setModal} />
+              )}
             </div>
           </DialogContent>
         </DropdownMenu>
@@ -256,8 +266,59 @@ function Register({ setModal }: any) {
   );
 }
 
-function Login() {
-  return <div></div>;
+function Login({ setModal }: any) {
+  const [loginMutation, { isSuccess, isError, error: loginError }] =
+    useLoginMutation();
+  const form = useForm<createDataLogin>({
+    resolver: zodResolver(createLoginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  useEffect(() => {
+    if (isError) {
+      const errorMessage = getErrorMessage(loginError);
+      if (errorMessage) {
+        toast.error(errorMessage);
+      }
+    }
+    if (isSuccess) {
+      toast.success("Login  successfully !!");
+      setModal(false);
+      form.reset();
+    }
+  }, [isSuccess, isError, loginError, form]);
+
+  const onSubmit = async (data: any) => {
+    await loginMutation(data);
+  };
+  return (
+    <div>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <EditProfileInput
+            control={form.control}
+            name="email"
+            placeholder="Email"
+            type="email"
+            label="Email"
+          />
+          <EditProfileInput
+            control={form.control}
+            name="password"
+            placeholder="Password"
+            type="password"
+            label="Password"
+          />
+          <div className="w-full flex items-center justify-end mt-4">
+            <Button type="submit">Login</Button>
+          </div>
+        </form>
+      </Form>
+    </div>
+  );
 }
 
 export default Auth;

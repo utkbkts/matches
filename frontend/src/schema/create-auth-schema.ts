@@ -75,3 +75,11 @@ export const createFormSchema = z
   .and(passwordSchema);
 
 export type createFormData = z.infer<typeof createFormSchema>;
+
+
+export const createLoginSchema = z.object({
+  email:z.string().email(),
+  password:passwordRequired
+})
+
+export type createDataLogin = z.infer<typeof createLoginSchema>

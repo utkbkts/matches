@@ -20,7 +20,7 @@ const Dashboard = () => {
     defaultValues: {
       city: "",
       country: "",
-      description: "",
+      status: "",
       name: "",
     },
     mode: "onChange",
@@ -29,7 +29,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (getUser) {
       form.setValue("name", getUser.name);
-      form.setValue("description", getUser.status);
+      form.setValue("status", getUser.status);
       form.setValue("city", getUser.city);
       form.setValue("country", getUser.country);
     }
@@ -62,11 +62,11 @@ const Dashboard = () => {
               name="name"
             />
             <EditProfileInput
-              placeholder="Description"
-              label="Description"
+              placeholder="Status"
+              label="Status"
               control={form.control}
-              error={form.formState.errors.description}
-              name="description"
+              error={form.formState.errors.status}
+              name="status"
             />
             <div className=" gap-2 grid grid-cols-2">
               <EditProfileInput

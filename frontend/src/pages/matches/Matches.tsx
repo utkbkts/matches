@@ -14,7 +14,7 @@ const FilterSection = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
   const page = searchParams.get("page") || "1";
-  const search = searchParams.get("query") || "";
+  const search = searchParams.get("search") || "";
   const minAge = searchParams.get("min") || "18";
   const maxAge = searchParams.get("max") || "50";
   const gender = searchParams.get("gender") || "";
@@ -24,8 +24,11 @@ const FilterSection = () => {
     search,
     minAge,
     maxAge,
-    gender,
   };
+  if (gender) {
+    params.gender = gender;
+  }
+  const filterApplied = search || minAge !== "18" || maxAge !== "50" || gender;
 
   const { data } = useGetAllMembersQuery(params);
   // Handle gender filter
@@ -34,8 +37,9 @@ const FilterSection = () => {
     setSearchParams({
       page: "1",
       gender: selectedGender,
-      min: minAge.toString(),
-      max: maxAge.toString(),
+      search: search,
+      min: minAge,
+      max: maxAge,
     });
   };
   //handle Age Filter
@@ -45,15 +49,36 @@ const FilterSection = () => {
       page: "1",
       min: minAge,
       max: maxAge,
-      gender: gender,
+      search: search,
+      gender: gender || "",
     });
   };
 
+  // Handle search
+
+  const handleSearch = (search: string) => {
+    console.log(searchParams);
+    searchParams.has("gender");
+    setCurrentPage(1);
+    setSearchParams({
+      page: "1",
+      gender: gender || "",
+      search: search,
+      min: minAge,
+      max: maxAge,
+    });
+  };
+  const handleResetFilters = () => {
+    setSearchParams(new URLSearchParams());
+    setCurrentPage(1);
+  };
   return (
     <div className="w-full">
       <div className="shadow-xl w-full p-6 bg-white rounded-xl">
         <div className="xl:flex hidden items-center justify-between gap-6">
-          <h1 className="font-bold text-gray-800 text-3xl">Results: 2</h1>
+          <h1 className="font-bold text-gray-800 text-3xl">
+            Results: {data?.totalCount}
+          </h1>
           {/* Gender Selection */}
           <div className="flex items-center gap-4">
             <h1 className="font-bold text-xl text-black/80">Gender:</h1>
@@ -80,7 +105,11 @@ const FilterSection = () => {
 
           {/* Order By Select */}
           <div className="w-[220px]">
-            <LocationOrder />
+            <LocationOrder
+              handleSearch={handleSearch}
+              membersData={data}
+              handleResetFilters={handleResetFilters}
+            />
           </div>
         </div>
         <div className="xl:hidden block">
@@ -88,9 +117,13 @@ const FilterSection = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 container mx-auto place-items-center">
-        {data?.users?.map((member: MembersType) => (
-          <MatchesItems member={member} key={member._id} />
-        ))}
+        {filterApplied
+          ? data?.users?.map((member: MembersType) => (
+              <MatchesItems member={member} key={member._id} />
+            ))
+          : data?.userAll?.map((member: MembersType) => (
+              <MatchesItems member={member} key={member._id} />
+            ))}
       </div>
       <div className="mt-12 container mx-auto w-full ">
         <Separator />
@@ -107,9 +140,10 @@ const FilterSection = () => {
             </h1>
           </div>
           <PaginationItems
-            totalItems={2}
+            totalItems={data?.totalCount}
             itemsPerPage={data?.resPerPage}
             currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />
         </div>
       </div>

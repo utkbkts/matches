@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { useMemo, useState } from "react";
 import { X } from "lucide-react";
 import OutsideClickHandler from "react-outside-click-handler";
-import { useGetAllMembersQuery } from "@/store/api/member-api";
 import { MembersType } from "@/types/types";
 
 const locationSchema = z.object({
@@ -18,9 +17,15 @@ type LocationFormData = z.infer<typeof locationSchema>;
 
 interface Props {
   handleSearch: (query: string) => void;
+  membersData: any;
+  handleResetFilters: any;
 }
 
-const LocationOrder = ({ handleSearch }: Props) => {
+const LocationOrder = ({
+  handleSearch,
+  membersData,
+  handleResetFilters,
+}: Props) => {
   const {
     register,
     watch,
@@ -30,22 +35,25 @@ const LocationOrder = ({ handleSearch }: Props) => {
     resolver: zodResolver(locationSchema),
     mode: "onChange",
   });
+
   const locationQuery = watch("location");
   const [isSuggestionsVisible, setSuggestionsVisible] = useState(false);
-  const { data: membersData } = useGetAllMembersQuery(null);
 
   const locationSuggestions = useMemo(() => {
-    if (!locationQuery) return [];
+    if (!locationQuery || !membersData?.users) return [];
 
     return membersData?.users
-      ?.filter((member: MembersType) =>
-        member.country.toLowerCase().includes(locationQuery.toLowerCase())
-      )
-      .map((member: MembersType) => member.country)
+      .filter((member: MembersType) => {
+        const countryMatch = member.city
+          .toLowerCase()
+          .includes(locationQuery.toLowerCase());
+        return countryMatch;
+      })
+      .map((member: MembersType) => member.city)
       .filter(
         (value: any, index: any, self: any) => self.indexOf(value) === index
       );
-  }, [locationQuery]);
+  }, [locationQuery, membersData]);
 
   const handleLocationClick = (location: string) => {
     setValue("location", location, { shouldValidate: true });
@@ -68,6 +76,7 @@ const LocationOrder = ({ handleSearch }: Props) => {
               onClick={() => {
                 setValue("location", "", { shouldValidate: true });
                 setSuggestionsVisible(false);
+                handleResetFilters();
               }}
             />
           )}
@@ -78,11 +87,8 @@ const LocationOrder = ({ handleSearch }: Props) => {
           {isSuggestionsVisible &&
             locationQuery &&
             locationSuggestions.length > 0 && (
-              <div
-                id="location-modal"
-                className="border border-gray-300 rounded mt-2 absolute bg-white z-50"
-              >
-                {locationSuggestions.map((location: any) => (
+              <div className="border border-gray-300 rounded mt-2 absolute bg-white z-50">
+                {locationSuggestions.map((location: string) => (
                   <div
                     key={location}
                     onClick={() => handleLocationClick(location)}
@@ -91,6 +97,15 @@ const LocationOrder = ({ handleSearch }: Props) => {
                     {location}
                   </div>
                 ))}
+              </div>
+            )}
+
+          {/* Display a fallback message if no suggestions are found */}
+          {isSuggestionsVisible &&
+            locationQuery &&
+            locationSuggestions.length === 0 && (
+              <div className="border border-gray-300 rounded mt-2 absolute bg-white z-50">
+                <div className="p-2 text-gray-500">No suggestions found</div>
               </div>
             )}
         </div>

@@ -11,7 +11,6 @@ export const memberApi = createApi({
   endpoints: (builder) => ({
     getAllMembers: builder.query({
       query: (params) => {
-        console.log(params);
         return {
           url: "/filter",
           params: {

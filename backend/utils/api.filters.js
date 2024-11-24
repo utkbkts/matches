@@ -7,11 +7,11 @@ class apiFilter {
   searchResults() {
     const search = this.queryStr.search
       ? {
-          country: { $regex: this.queryStr.search, options: "i" },
+          city: { $regex: this.queryStr.search, $options: "i" },
         }
       : {};
-
     this.query = this.query.find({ ...search });
+    console.log(search);
     return this;
   }
 

@@ -35,7 +35,6 @@ const PaginationItems = ({
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
-  console.log("🚀 ~ pages:", pages);
 
   const setCurrentPageNo = (pageNumber: number) => {
     setCurrentPage(pageNumber);

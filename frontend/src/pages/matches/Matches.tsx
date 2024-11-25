@@ -8,7 +8,8 @@ import AgeRange from "./partials/AgeRange";
 import LocationOrder from "./partials/LocationOrder";
 import MobileTopBar from "./partials/MobileTopBar";
 import { useGetAllMembersQuery } from "@/store/api/member-api";
-import { MembersType } from "@/types/types";
+import { MembersType, SignupType } from "@/types/types";
+import { useAppSelector } from "@/store/hooks";
 
 const FilterSection = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -18,7 +19,7 @@ const FilterSection = () => {
   const minAge = searchParams.get("min") || "18";
   const maxAge = searchParams.get("max") || "50";
   const gender = searchParams.get("gender") || "";
-
+  const { user } = useAppSelector((state) => state.auth);
   const params = {
     page,
     search,
@@ -28,9 +29,13 @@ const FilterSection = () => {
   if (gender) {
     params.gender = gender;
   }
-  const filterApplied = search || minAge !== "18" || maxAge !== "50" || gender;
 
   const { data } = useGetAllMembersQuery(params);
+
+  //filtered me user
+  const filterUser = data?.users?.filter(
+    (item: SignupType) => item._id !== user?._id
+  );
   // Handle gender filter
   const handleGenderChange = (selectedGender: string) => {
     setCurrentPage(1);
@@ -57,7 +62,6 @@ const FilterSection = () => {
   // Handle search
 
   const handleSearch = (search: string) => {
-    console.log(searchParams);
     searchParams.has("gender");
     setCurrentPage(1);
     setSearchParams({
@@ -107,7 +111,7 @@ const FilterSection = () => {
           <div className="w-[220px]">
             <LocationOrder
               handleSearch={handleSearch}
-              membersData={data}
+              membersData={filterUser}
               handleResetFilters={handleResetFilters}
             />
           </div>
@@ -117,13 +121,9 @@ const FilterSection = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 container mx-auto place-items-center">
-        {filterApplied
-          ? data?.users?.map((member: MembersType) => (
-              <MatchesItems member={member} key={member._id} />
-            ))
-          : data?.userAll?.map((member: MembersType) => (
-              <MatchesItems member={member} key={member._id} />
-            ))}
+        {filterUser?.map((member: MembersType) => (
+          <MatchesItems member={member} key={member._id} />
+        ))}
       </div>
       <div className="mt-12 container mx-auto w-full ">
         <Separator />

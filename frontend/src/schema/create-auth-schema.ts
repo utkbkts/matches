@@ -39,7 +39,6 @@ const genderString = z.enum(["male", "female"], {
 
 //COUNTRY
 const countryCodes = Object.values(countries).map((item) => item.name);
-console.log("🚀 ~ countryCodes:", countryCodes);
 
 const countryString = z.enum(countryCodes as any, {
   required_error: "Country is required",
@@ -76,10 +75,9 @@ export const createFormSchema = z
 
 export type createFormData = z.infer<typeof createFormSchema>;
 
-
 export const createLoginSchema = z.object({
-  email:z.string().email(),
-  password:passwordRequired
-})
+  email: z.string().email(),
+  password: passwordRequired,
+});
 
-export type createDataLogin = z.infer<typeof createLoginSchema>
+export type createDataLogin = z.infer<typeof createLoginSchema>;

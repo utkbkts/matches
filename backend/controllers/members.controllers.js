@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 import apiFilter from "../utils/api.filters.js";
+import ErrorHandler from "../utils/error.handler.js";
 
 const memberFilters = async (req, res, next) => {
   try {
@@ -26,4 +27,24 @@ const memberFilters = async (req, res, next) => {
   }
 };
 
-export default { memberFilters };
+// memberGetById fonksiyonu
+const memberGetById = async (req, res, next) => {
+  const userId = req.user._id;
+  try {
+    const user = await User.findById(userId)
+      .populate("liked.user")
+      .populate("myFavorite.user");
+
+    if (!user) {
+      return next(new ErrorHandler("User not found", 404));
+    }
+
+    return res.status(200).json({
+      user,
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 400));
+  }
+};
+
+export default { memberFilters, memberGetById };

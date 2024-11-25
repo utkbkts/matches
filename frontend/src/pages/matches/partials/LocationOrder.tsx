@@ -40,9 +40,9 @@ const LocationOrder = ({
   const [isSuggestionsVisible, setSuggestionsVisible] = useState(false);
 
   const locationSuggestions = useMemo(() => {
-    if (!locationQuery || !membersData?.users) return [];
+    if (!locationQuery || !membersData) return [];
 
-    return membersData?.users
+    return membersData
       .filter((member: MembersType) => {
         const countryMatch = member.city
           .toLowerCase()

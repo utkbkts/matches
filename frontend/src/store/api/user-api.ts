@@ -96,6 +96,16 @@ export const userApi = createApi({
       },
       invalidatesTags: ["User", "Update"],
     }),
+    liked: builder.mutation({
+      query({ body, id }) {
+        return {
+          url: `/liked/${id}`,
+          method: "POST",
+          body,
+        };
+      },
+      invalidatesTags: ["User", "Update"],
+    }),
   }),
 });
 
@@ -107,4 +117,5 @@ export const {
   useUpdatePhotoMutation,
   useUpdateProfileMutation,
   useUpdatePasswordMutation,
+  useLikedMutation,
 } = userApi;

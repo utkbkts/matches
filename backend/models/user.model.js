@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import validator from "validator";
+
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -77,18 +78,30 @@ const userSchema = new mongoose.Schema(
     },
     liked: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+        likedCount: {
+          type: Number,
+          default: 0,
+        },
+        createdAt: {
+          type: Date,
+          default: Date.now,
+        },
       },
     ],
-    likedCount: {
-      type: Number,
-      default: 0,
-    },
     myFavorite: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Liked",
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+        createdAt: {
+          type: Date,
+          default: Date.now,
+        },
       },
     ],
   },

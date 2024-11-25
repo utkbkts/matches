@@ -13,7 +13,7 @@ router.post("/logout", authControllers.logout);
 router.get("/me", isAuthMiddleware, authControllers.me);
 
 //liked
-router.put("/liked/:id", isAuthMiddleware, authControllers.liked);
+router.post("/liked/:id", isAuthMiddleware, authControllers.liked);
 //profile update
 router.put("/profile/update", isAuthMiddleware, authControllers.updateProfile);
 

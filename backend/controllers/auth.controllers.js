@@ -106,27 +106,41 @@ const liked = async (req, res, next) => {
   try {
     const userId = req.params.id;
 
+    // Beğenilen kullanıcıyı bul
     const userToLike = await User.findById(userId);
     if (!userToLike) {
       return next(new ErrorHandler("User not found", 404));
     }
 
-    if (userToLike.liked.includes(req.user._id)) {
+    const userAlreadyLiked = userToLike.liked.some(
+      (like) => like.user && like.user.toString() === req.user._id.toString()
+    );
+
+    if (userAlreadyLiked) {
+      await User.findByIdAndUpdate(userId, {
+        $pull: { liked: { user: req.user._id } },
+        $inc: { likedCount: -1 },
+      });
+
+      await User.findByIdAndUpdate(req.user._id, {
+        $pull: { myFavorite: { user: userId } },
+      });
+
       return res
-        .status(409)
-        .json({ message: "You have already liked this user" });
+        .status(200)
+        .json({ message: "Like removed", user: userToLike });
+    } else {
+      await User.findByIdAndUpdate(userId, {
+        $addToSet: { liked: { user: req.user._id } },
+        $inc: { likedCount: 1 },
+      });
+
+      await User.findByIdAndUpdate(req.user._id, {
+        $addToSet: { myFavorite: { user: userId } },
+      });
+
+      return res.status(200).json({ message: "Liked added", user: userToLike });
     }
-
-    userToLike.liked.push(req.user._id);
-    userToLike.likedCount += 1;
-    const me = await User.findById(req.user._id);
-
-    me.myFavorite.push(userId);
-
-    await me.save();
-    await userToLike.save();
-
-    return res.status(200).json({ message: "Success", user: userToLike });
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
   }

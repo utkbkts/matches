@@ -13,6 +13,7 @@ export type SignupType = {
   city: string;
   gender: string;
   birthday: string;
+  currentSubscription?: any;
 };
 
 export type MembersType = {

@@ -1,7 +1,7 @@
 import { lazy, Suspense } from "react";
 import Loading from "@/components/loader/Loading";
 import NotFound from "@/components/NotFound";
-const UserLayouts = lazy(() => import("@/layouts/UserLayouts"));
+import UserLayouts from "@/layouts/UserLayouts";
 const UserProfile = lazy(() => import("@/pages/profile/Profile"));
 const UpdatePackage = lazy(
   () => import("@/pages/profile/partials/dashboard/UpdatePackage")
@@ -17,11 +17,7 @@ const MemberChat = lazy(() => import("@/pages/members/partials/MemberChat"));
 
 export const UserRoutes = {
   path: "/user-profile",
-  element: (
-    <Suspense fallback={<Loading />}>
-      <UserLayouts />
-    </Suspense>
-  ),
+  element: <UserLayouts />,
   errorElement: <NotFound />,
   children: [
     {

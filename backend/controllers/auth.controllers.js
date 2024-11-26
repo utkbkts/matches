@@ -247,7 +247,7 @@ const passwordUpdate = async (req, res, next) => {
 };
 
 const me = async (req, res, next) => {
-  const userId = req.user._id;
+  const userId = req?.user?._id;
 
   try {
     const user = await User.findById(userId);

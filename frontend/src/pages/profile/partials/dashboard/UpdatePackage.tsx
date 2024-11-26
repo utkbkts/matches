@@ -1,5 +1,6 @@
 import CardPackage from "@/components/cardPackage/CardPackage";
 import CircularProgressBar from "@/components/circleBar/CircleProgress";
+import { useAppSelector } from "@/store/hooks";
 import { Check } from "lucide-react";
 import { useState } from "react";
 
@@ -71,19 +72,30 @@ export const cardPackageData = [
 
 const UpdatePackage = () => {
   const [progress, setProgress] = useState(80);
-
+  const { user } = useAppSelector((state) => state.auth);
+  console.log("🚀 ~ UpdatePackage ~ user:", user);
   return (
     <div className="flex items-center justify-center h-full flex-col gap-4">
-      <CircularProgressBar progress={progress} size={150} strokeWidth={20} />
-      <div className="flex flex-col items-center">
-        <h1 className=" text-xl">Şuan deneme süresi kullanıyorsunuz.</h1>
-        <span className="text-muted-foreground">
-          Deneme süresinin bitiş tarihi 04.04.2023.
-        </span>
-      </div>
+      {user?.currentSubscription === null ? (
+        <h1>Buy now to find your dream partner</h1>
+      ) : (
+        <>
+          <CircularProgressBar
+            progress={progress}
+            size={150}
+            strokeWidth={20}
+          />
+          <div className="flex flex-col items-center">
+            <h1 className=" text-xl">Şuan deneme süresi kullanıyorsunuz.</h1>
+            <span className="text-muted-foreground">
+              Deneme süresinin bitiş tarihi 04.04.2023.
+            </span>
+          </div>
+        </>
+      )}
       <div className="flex flex-col items-center gap-4">
         <h1 className="font-semibold text-xl">
-          Şimdi paketlerini yükseltebilirsin.
+          You can upgrade your packages now.
         </h1>
         <div className="grid grid-cols-3 gap-4">
           {cardPackageData.map((packageData) => (

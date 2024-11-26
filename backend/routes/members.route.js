@@ -8,4 +8,8 @@ router.get("/filter", membersControllers.memberFilters);
 
 router.get("/byId", isAuthMiddleware, membersControllers.memberGetById);
 
+router.get("/memberAll", membersControllers.memberGetAll);
+
+router.get("/userById/:id", membersControllers.usersProfileId);
+
 export default router;

@@ -47,4 +47,23 @@ const memberGetById = async (req, res, next) => {
   }
 };
 
-export default { memberFilters, memberGetById };
+const memberGetAll = async (req, res, next) => {
+  try {
+    const members = await User.find().lean();
+    res.status(200).json({ members });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 400));
+  }
+};
+
+const usersProfileId = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.findById(userId).lean();
+    res.status(200).json({ user });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 400));
+  }
+};
+
+export default { memberFilters, memberGetById, memberGetAll, usersProfileId };

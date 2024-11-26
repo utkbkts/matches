@@ -1,16 +1,14 @@
 import { Link, useLocation, useParams } from "react-router-dom";
-import { membersData } from "../Members";
 import calculateAge from "@/helpers/date-format";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { useUserByIdQuery } from "@/store/api/member-api";
 
 const Sidebar = () => {
   const { id } = useParams();
   const location = useLocation();
-  const member = membersData.find(
-    (member) => member.id === parseInt(id as any)
-  );
   const basePath = `/members/details/${id}`;
+  const { data } = useUserByIdQuery(id);
   const navLinks = [
     {
       id: 1,
@@ -32,9 +30,9 @@ const Sidebar = () => {
     <div className="h-[80vh] ">
       <div className="flex p-2 flex-col h-full">
         <img
-          src={member?.image}
-          alt={member?.name}
-          title={member?.gender}
+          src={data?.user?.picture?.url}
+          alt={data?.user?.name}
+          title={data?.user?.gender}
           height={200}
           width={200}
           className="rounded-full mt-6 aspect-square object-cover"
@@ -42,7 +40,7 @@ const Sidebar = () => {
         <div className="flex flex-col justify-between flex-grow">
           <div className="flex gap-2">
             <h1 className="text-xl">
-              {member?.name}, {calculateAge(member?.dateOfBirth as any)}
+              {data?.user?.name}, {calculateAge(data?.user?.birthday as any)}
             </h1>
           </div>
           <Separator />

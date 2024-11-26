@@ -28,7 +28,20 @@ export const memberApi = createApi({
       query: () => "/byId",
       providesTags: ["Member"],
     }),
+    memberAll: builder.query({
+      query: () => "/memberAll",
+      providesTags: ["Member"],
+    }),
+    userById: builder.query({
+      query: (id) => `/userById/${id}`,
+      providesTags: ["Member"],
+    }),
   }),
 });
 
-export const { useGetAllMembersQuery, useGetMemberByIdQuery } = memberApi;
+export const {
+  useGetAllMembersQuery,
+  useGetMemberByIdQuery,
+  useMemberAllQuery,
+  useUserByIdQuery,
+} = memberApi;

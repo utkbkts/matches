@@ -2,9 +2,9 @@
 import { Suspense, lazy } from "react";
 import Loading from "@/components/loader/Loading";
 import NotFound from "@/components/NotFound";
+import MemberLayout from "@/layouts/MemberLayout";
 
 // Bileşenleri lazy-load ile tanımladık
-const MemberLayout = lazy(() => import("@/layouts/MemberLayout"));
 const MemberChat = lazy(() => import("@/pages/members/partials/MemberChat"));
 const MemberPhotos = lazy(
   () => import("@/pages/members/partials/MemberPhotos")
@@ -15,13 +15,17 @@ const MemberProfile = lazy(
 
 export const MemberRoutes = {
   path: "/members/details/:id/profile",
-  element: (
-    <Suspense fallback={<Loading />}>
-      <MemberLayout />
-    </Suspense>
-  ),
+  element: <MemberLayout />,
   errorElement: <NotFound />,
   children: [
+    {
+      path: "",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <MemberProfile />
+        </Suspense>
+      ),
+    },
     {
       path: "photos",
       element: (
@@ -35,14 +39,6 @@ export const MemberRoutes = {
       element: (
         <Suspense fallback={<Loading />}>
           <MemberChat />
-        </Suspense>
-      ),
-    },
-    {
-      path: "",
-      element: (
-        <Suspense fallback={<Loading />}>
-          <MemberProfile />
         </Suspense>
       ),
     },

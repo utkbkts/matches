@@ -46,13 +46,17 @@ const PaginationItems = ({
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
+      searchParams.set("page", (currentPage + 1).toString());
     }
+    navigate("?" + searchParams.toString());
   };
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
+      searchParams.set("page", (currentPage - 1).toString());
     }
+    navigate("?" + searchParams.toString());
   };
 
   return (

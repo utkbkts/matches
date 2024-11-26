@@ -1,4 +1,6 @@
 import { Separator } from "@/components/ui/separator";
+import { useAppSelector } from "@/store/hooks";
+import { Link } from "react-router-dom";
 
 const messages = [
   {
@@ -61,37 +63,81 @@ const Message = ({ name, message, time, isUser }: Props) => (
 );
 
 const MemberChat = () => {
+  const { user } = useAppSelector((state) => state.auth);
+
   return (
-    <div className="flex-grow flex flex-col h-full p-4">
-      <h1 className="text-muted-foreground mb-2">Chat</h1>
-      <Separator />
-
-      <div className="flex-grow overflow-y-auto space-y-4">
-        {messages.map((msg) => (
+    <>
+      <div className="flex-grow flex flex-col h-full p-4 relative">
+        {user?.currentSubscription === null ? (
           <>
-            <Message
-              key={msg.id}
-              name={msg.name}
-              message={msg.message}
-              time={msg.time}
-              isUser={msg.isUser}
-            />
+            <div className="backdrop-blur-lg bg-gradient-to-r from-white/40 to-white/10 absolute left-0 top-0 w-full h-[80vh] flex items-center justify-center">
+              <div className="border border-gray-300 rounded-lg shadow-lg bg-white/70 h-[400px] w-[600px] p-8 flex flex-col items-center justify-center space-y-6">
+                <h1 className="text-2xl font-semibold text-gray-800 text-center">
+                  Buy the package to talk to the person you like now
+                </h1>
+                <Link to={"/user-profile/package"}>
+                  <button className="px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full shadow-md hover:shadow-lg transition duration-300 hover:scale-105">
+                    Buy Package
+                  </button>
+                </Link>
+              </div>
+            </div>
+            <div className="flex-grow overflow-y-auto space-y-4">
+              {messages.map((msg) => (
+                <>
+                  <Message
+                    key={msg.id}
+                    name={msg.name}
+                    message={msg.message}
+                    time={msg.time}
+                    isUser={msg.isUser}
+                  />
+                </>
+              ))}
+            </div>
+            <div className="flex items-center gap-2 mt-4 p-2">
+              <input
+                type="text"
+                placeholder="Type your message..."
+                className="flex-grow p-2 text-gray-800 rounded-md border border-gray-400 outline-none"
+              />
+              <button className="p-2 bg-green-500 text-white rounded-md text-sm font-semibold">
+                Send
+              </button>
+            </div>
           </>
-        ))}
+        ) : (
+          <>
+            <h1 className="text-muted-foreground mb-2">Chat</h1>
+            <Separator />
+            <div className="flex-grow overflow-y-auto space-y-4">
+              {messages.map((msg) => (
+                <>
+                  <Message
+                    key={msg.id}
+                    name={msg.name}
+                    message={msg.message}
+                    time={msg.time}
+                    isUser={msg.isUser}
+                  />
+                </>
+              ))}
+            </div>
+            {/* Chat Input */}
+            <div className="flex items-center gap-2 mt-4 p-2">
+              <input
+                type="text"
+                placeholder="Type your message..."
+                className="flex-grow p-2 text-gray-800 rounded-md border border-gray-400 outline-none"
+              />
+              <button className="p-2 bg-green-500 text-white rounded-md text-sm font-semibold">
+                Send
+              </button>
+            </div>
+          </>
+        )}
       </div>
-
-      {/* Chat Input */}
-      <div className="flex items-center gap-2 mt-4 p-2">
-        <input
-          type="text"
-          placeholder="Type your message..."
-          className="flex-grow p-2 text-gray-800 rounded-md border border-gray-400 outline-none"
-        />
-        <button className="p-2 bg-green-500 text-white rounded-md text-sm font-semibold">
-          Send
-        </button>
-      </div>
-    </div>
+    </>
   );
 };
 

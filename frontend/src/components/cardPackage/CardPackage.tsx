@@ -6,6 +6,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { getErrorMessage } from "@/helpers/error-message";
+import { useCreateSubscriptinMutation } from "@/store/api/subscription-api";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 interface Feature {
   icon: JSX.Element;
@@ -15,16 +19,58 @@ interface Feature {
 interface Props {
   packageData: {
     id: number;
-    title: string;
-    price: number;
-    duration: number;
+    planId: string;
+    planAmount: number;
+    planCurrency: string;
+    planInterval: string;
+    trialDays?: any;
     description: string;
     features: Feature[];
   };
 }
 
 const CardPackage = ({ packageData }: Props) => {
-  const { title, price, duration, description, features } = packageData;
+  const {
+    description,
+    features,
+    planAmount,
+    planCurrency,
+    planId,
+    planInterval,
+    trialDays,
+  } = packageData;
+
+  const [stripeMutation, { isError, error }] = useCreateSubscriptinMutation();
+
+  useEffect(() => {
+    if (isError) {
+      const getError = getErrorMessage(error);
+      toast.error(getError);
+    }
+  }, [isError, error]);
+
+  const handleSubscribe = async () => {
+    const data = {
+      planId,
+      planAmount,
+      planCurrency,
+      planInterval,
+      trialDays,
+    };
+
+    try {
+      const response = await stripeMutation(data);
+      const { url } = response?.data || {};
+
+      if (url) {
+        window.location.href = url;
+      } else {
+        toast.error("Subscription creation failed.");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div>
@@ -32,7 +78,7 @@ const CardPackage = ({ packageData }: Props) => {
         {/* Başlık ve Açıklama */}
         <CardHeader className="text-center p-6 bg-gradient-to-r from-indigo-50 to-white border-b border-gray-200">
           <CardTitle className="text-2xl font-extrabold text-indigo-700 mb-2">
-            {title}
+            {planId}
           </CardTitle>
           <CardDescription className="text-gray-500 italic font-medium">
             {description}
@@ -43,11 +89,13 @@ const CardPackage = ({ packageData }: Props) => {
         <CardContent className="p-4 flex-grow h-full">
           <div className="flex justify-between items-center">
             <span className="text-lg font-semibold text-gray-700">Fiyat:</span>
-            <span className="text-xl font-bold text-green-600">${price}</span>
+            <span className="text-xl font-bold text-green-600">
+              ${planAmount}({planCurrency})
+            </span>
           </div>
           <div className="flex justify-between items-center mt-2">
             <span className="text-lg font-semibold text-gray-700">Süre:</span>
-            <span className="text-md text-gray-600">{duration} gün</span>
+            <span className="text-md text-gray-600">{planInterval}</span>
           </div>
           {/* Özellikler Listesi */}
           <ul className="mt-4 space-y-2">
@@ -61,7 +109,10 @@ const CardPackage = ({ packageData }: Props) => {
         </CardContent>
 
         {/* Alt Kısım - Buton */}
-        <CardFooter className="flex mt-auto justify-center p-4 bg-gray-50">
+        <CardFooter
+          onClick={handleSubscribe}
+          className="flex mt-auto justify-center p-4 bg-gray-50"
+        >
           <button className="bg-gradient-to-r from-green-400 to-blue-500 text-white px-6 py-2 rounded-full font-semibold shadow-md hover:from-green-500 hover:to-blue-600 transition-colors">
             Satın Al
           </button>

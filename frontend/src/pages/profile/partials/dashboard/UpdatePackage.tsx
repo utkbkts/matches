@@ -1,15 +1,32 @@
 import CardPackage from "@/components/cardPackage/CardPackage";
 import CircularProgressBar from "@/components/circleBar/CircleProgress";
+import { calculateDate, calculateProgress } from "@/helpers/date-format";
+import { useGetByIdQuery } from "@/store/api/subscription-api";
 import { useAppSelector } from "@/store/hooks";
 import { Check } from "lucide-react";
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
 export const cardPackageData = [
   {
     id: 1,
-    title: "Silver",
-    price: 40,
-    duration: 30,
+    planId: "Trial Free",
+    planAmount: 0,
+    planInterval: "month",
+    planCurrency: "USD",
+    trialDays: 7,
+    description: "Trial 7 days",
+    features: [
+      {
+        icon: <Check className="w-7 h-7 text-green-400" />,
+        message: "Sınırsız Mesajlaşma",
+      },
+    ],
+  },
+  {
+    id: 2,
+    planId: "Silver",
+    planAmount: 19,
+    planInterval: "month",
+    planCurrency: "USD",
     description: "Silver package",
     features: [
       {
@@ -27,10 +44,11 @@ export const cardPackageData = [
     ],
   },
   {
-    id: 2,
-    title: "Platinum",
-    price: 70,
-    duration: 60,
+    id: 3,
+    planId: "Platinum",
+    planAmount: 70,
+    planCurrency: "USD",
+    planInterval: "month",
     description: "Platinum package",
     features: [
       {
@@ -48,10 +66,11 @@ export const cardPackageData = [
     ],
   },
   {
-    id: 3,
-    title: "Gold",
-    price: 99,
-    duration: 90,
+    id: 4,
+    planId: "Gold",
+    planAmount: 99,
+    planCurrency: "USD",
+    planInterval: "year",
     description: "Gold package",
     features: [
       {
@@ -71,11 +90,24 @@ export const cardPackageData = [
 ];
 
 const UpdatePackage = () => {
-  const [progress, setProgress] = useState(80);
   const { user } = useAppSelector((state) => state.auth);
-  console.log("🚀 ~ UpdatePackage ~ user:", user);
+  const { data } = useGetByIdQuery("");
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    if (
+      data?.subscription?.subscription_start_date &&
+      data?.subscription?.subscription_end_date
+    ) {
+      const startDate = data.subscription.subscription_start_date;
+      const endDate = data.subscription.subscription_end_date;
+      const calculatedProgress = calculateProgress(startDate, endDate);
+      setProgress(calculatedProgress);
+    }
+  }, [data]);
+
   return (
-    <div className="flex items-center justify-center h-full flex-col gap-4">
+    <div className="flex items-center justify-center min-h-screen flex-col gap-4">
       {user?.currentSubscription === null ? (
         <h1>Buy now to find your dream partner</h1>
       ) : (
@@ -85,12 +117,22 @@ const UpdatePackage = () => {
             size={150}
             strokeWidth={20}
           />
-          <div className="flex flex-col items-center">
-            <h1 className=" text-xl">Şuan deneme süresi kullanıyorsunuz.</h1>
-            <span className="text-muted-foreground">
-              Deneme süresinin bitiş tarihi 04.04.2023.
-            </span>
-          </div>
+          {data?.subscription?.subscription_status === "past_due" ? (
+            <div className="flex flex-col items-center">
+              <h1>You are currently using a trial period.</h1>
+              <span className="text-muted-foreground">
+                Trial period end date{" "}
+                {calculateDate(data?.subscription?.trial_end_date)}.
+              </span>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center">
+              <span className="text-muted-foreground">
+                Your package will expire{" "}
+                {calculateDate(data?.subscription?.subscription_end_date)}.
+              </span>
+            </div>
+          )}
         </>
       )}
       <div className="flex flex-col items-center gap-4">

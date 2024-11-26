@@ -12,16 +12,11 @@ const subscriptionCreateStripe = async (req, res, next) => {
     const { planId, planAmount, planCurrency, planInterval, trialDays } =
       req.body;
 
-    if (
-      !planId ||
-      !planAmount ||
-      !planCurrency ||
-      !planInterval ||
-      !trialDays
-    ) {
+    if (!planId || !planAmount || !planCurrency || !planInterval) {
       return next(new ErrorHandler("All fields are required", 400));
     }
 
+    // Stripe checkout session oluşturma
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "subscription",
@@ -32,7 +27,7 @@ const subscriptionCreateStripe = async (req, res, next) => {
             product_data: {
               name: planId,
             },
-            unit_amount: planAmount,
+            unit_amount: planAmount * 100,
             recurring: {
               interval: planInterval,
               interval_count: 1,
@@ -48,38 +43,71 @@ const subscriptionCreateStripe = async (req, res, next) => {
       cancel_url: `${process.env.FRONTEND_URL}/cancel`,
     });
 
-    const subscription = await Subscription.create({
+    // Mevcut aboneliği bulma
+    const existingSubscription = await Subscription.findOne({
       user: req.user._id,
-      subscription_type: planId,
-      stripe_price_id: session.id,
-      trial_days: trialDays,
-      amount: planAmount / 100,
       is_subscribed: true,
-      subscription_status: "active",
-      subscription_Interval: planInterval,
-      subscription_start_date: new Date(),
-      subscription_end_date: new Date(
-        Date.now() +
-          (planInterval === "month"
-            ? 30 * 24 * 60 * 60 * 1000
-            : planInterval === "year"
-            ? 365 * 24 * 60 * 60 * 1000
-            : 0)
-      ),
-      trial_end_date:
-        trialDays > 0
-          ? new Date(Date.now() + trialDays * 24 * 60 * 60 * 1000)
-          : null,
     });
 
+    let subscription;
+    if (existingSubscription) {
+      // Eğer mevcut bir abonelik varsa, güncelle
+      subscription = await Subscription.findByIdAndUpdate(
+        existingSubscription._id,
+        {
+          subscription_type: planId,
+          stripe_price_id: session.id,
+          trial_days: trialDays,
+          amount: planAmount,
+          subscription_status: "active",
+          subscription_Interval: planInterval,
+          subscription_start_date: new Date(),
+          subscription_end_date: new Date(
+            Date.now() +
+              (planInterval === "month"
+                ? 30 * 24 * 60 * 60 * 1000
+                : planInterval === "year"
+                ? 365 * 24 * 60 * 60 * 1000
+                : 0)
+          ),
+          trial_end_date:
+            trialDays > 0
+              ? new Date(Date.now() + trialDays * 24 * 60 * 60 * 1000)
+              : null,
+        },
+        { new: true }
+      );
+    } else {
+      // Eğer mevcut abonelik yoksa, yeni bir abonelik oluştur
+      subscription = await Subscription.create({
+        user: req.user._id,
+        subscription_type: planId,
+        stripe_price_id: session.id,
+        trial_days: trialDays,
+        amount: planAmount,
+        is_subscribed: true,
+        subscription_status: "active",
+        subscription_Interval: planInterval,
+        subscription_start_date: new Date(),
+        subscription_end_date: new Date(
+          Date.now() +
+            (planInterval === "month"
+              ? 30 * 24 * 60 * 60 * 1000
+              : planInterval === "year"
+              ? 365 * 24 * 60 * 60 * 1000
+              : 0)
+        ),
+        trial_end_date:
+          trialDays > 0
+            ? new Date(Date.now() + trialDays * 24 * 60 * 60 * 1000)
+            : null,
+      });
+    }
+
+    // Kullanıcının currentSubscription'ını güncelleme
     await User.findByIdAndUpdate(req.user._id, {
       currentSubscription: subscription._id,
     });
-
-    if (subscription.trial_end_date) {
-      subscription.subscription_status = "past_due";
-      await subscription.save();
-    }
 
     res.status(201).json({ url: session.url, subscription });
   } catch (error) {
@@ -88,6 +116,7 @@ const subscriptionCreateStripe = async (req, res, next) => {
     });
   }
 };
+
 const updateSubscription = async (req, res, next) => {
   try {
     const { newPlanId, newPlanAmount, newPlanCurrency, newPlanInterval } =
@@ -132,7 +161,7 @@ const updateSubscription = async (req, res, next) => {
     existingSubscription.subscription_type = newPlanId;
     existingSubscription.trial_days = null;
     existingSubscription.stripe_price_id = session.id;
-    existingSubscription.amount = newPlanAmount / 100;
+    existingSubscription.amount = newPlanAmount * 100;
     existingSubscription.subscription_Interval = newPlanInterval;
     existingSubscription.subscription_start_date = new Date();
     existingSubscription.subscription_end_date = new Date(
@@ -162,4 +191,24 @@ const updateSubscription = async (req, res, next) => {
   }
 };
 
-export default { subscriptionCreateStripe, updateSubscription };
+const getSubscription = async (req, res, next) => {
+  try {
+    const existingSubscription = await Subscription.findOne({
+      user: req.user._id,
+      is_subscribed: true,
+    }).populate("user");
+    res.status(200).json({
+      subscription: existingSubscription,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || "Something went wrong",
+    });
+  }
+};
+
+export default {
+  subscriptionCreateStripe,
+  updateSubscription,
+  getSubscription,
+};

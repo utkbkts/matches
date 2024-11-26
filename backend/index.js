@@ -6,6 +6,8 @@ import cors from "cors";
 import path from "path";
 import compression from "compression";
 import errorMiddleware from "./middleware/error.middleware.js";
+import bodyParser from "body-parser";
+
 //SOCKET IO
 
 //DB
@@ -15,6 +17,7 @@ import authRoutes from "./routes/auth.routes.js";
 import subscriptionRoutes from "./routes/subscription.route.js";
 import membersRoutes from "./routes/members.route.js";
 import messagesRoutes from "./routes/message.routes.js";
+import { stripeWebhook } from "./controllers/stripe.webhooks.js";
 
 //path
 const __dirname = path.resolve();
@@ -47,6 +50,11 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/subscription", subscriptionRoutes);
 app.use("/api/v1/members", membersRoutes);
 app.use("/api/v1/messages", messagesRoutes);
+app.use(
+  "/api/v1/webhooks",
+  bodyParser.raw({ type: "application/json" }),
+  stripeWebhook
+);
 
 app.use(errorMiddleware);
 

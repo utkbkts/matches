@@ -2,6 +2,7 @@
 import React, { Suspense } from "react";
 import Loading from "../components/loader/Loading";
 import NotFound from "@/components/NotFound";
+import SuccessPage from "@/components/successPage/SuccessPage";
 
 const MainLayout = React.lazy(() => import("@/layouts/MainLayouts"));
 const HomePage = React.lazy(() => import("@/pages/homePage/HomePage"));
@@ -52,6 +53,14 @@ export const MainRoutes = {
       element: (
         <Suspense fallback={<Loading />}>
           <Messages />
+        </Suspense>
+      ),
+    },
+    {
+      path: "success",
+      element: (
+        <Suspense fallback={<Loading />}>
+          <SuccessPage />
         </Suspense>
       ),
     },

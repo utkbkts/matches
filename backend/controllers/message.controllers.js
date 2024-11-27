@@ -8,29 +8,35 @@ const sendMessage = async (req, res) => {
 
   const senderId = req.user._id;
 
-  let conversation = await Conversation.findOne({
-    participants: { $all: [senderId, receiverId] },
-  });
-
-  if (!conversation) {
-    conversation = await Conversation.create({
-      participants: [senderId, receiverId],
+  try {
+    let conversation = await Conversation.findOne({
+      participants: { $all: [senderId, receiverId] },
     });
+
+    if (!conversation) {
+      conversation = await Conversation.create({
+        participants: [senderId, receiverId],
+      });
+    }
+
+    const newMessage = new Message({
+      senderId,
+      receiverId,
+      message,
+    });
+
+    if (newMessage) {
+      conversation.messages.push(newMessage._id);
+    }
+
+    await Promise.all([conversation.save(), newMessage.save()]);
+
+    return res
+      .status(201)
+      .json({ message: "Message sent successfully", conversation });
+  } catch (error) {
+    return res.status(500).json({ message: "Something went wrong !!" });
   }
-
-  const newMessage = new Message({
-    senderId,
-    receiverId,
-    message,
-  });
-
-  if (newMessage) {
-    conversation.messages.push(newMessage._id);
-  }
-
-  await Promise.all([conversation.save(), newMessage.save()]);
-
-  res.status(201).json({ message: "Message sent successfully", conversation });
 };
 
 const getMessages = async (req, res, next) => {
@@ -39,15 +45,17 @@ const getMessages = async (req, res, next) => {
 
   const conversation = await Conversation.findOne({
     participants: { $all: [senderId, userToChatId] },
-  }).populate("messages");
-
-  if (!conversation) {
-    return next(new ErrorHandler("No conversation found", 404));
-  }
+  }).populate({
+    path: "messages",
+    populate: {
+      path: "senderId receiverId",
+      select: "name email picture",
+    },
+  });
 
   const messages = conversation.messages;
 
-  res.status(200).json(messages);
+  return res.status(200).json(messages);
 };
 
 export default { sendMessage, getMessages };

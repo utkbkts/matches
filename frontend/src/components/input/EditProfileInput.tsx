@@ -11,10 +11,11 @@ import { Textarea } from "../ui/textarea";
 interface Props {
   control: any;
   name: string;
-  label: string;
+  label?: string;
   placeholder: string;
   error?: any;
   multiline?: boolean;
+  className?: string;
   type?: "text" | "password" | "email";
 }
 
@@ -26,6 +27,7 @@ const EditProfileInput = ({
   error,
   multiline,
   type,
+  className,
 }: Props) => {
   return (
     <FormField
@@ -43,7 +45,12 @@ const EditProfileInput = ({
                 rows={6}
               />
             ) : (
-              <Input placeholder={placeholder} {...field} type={type} />
+              <Input
+                placeholder={placeholder}
+                {...field}
+                type={type}
+                className={className}
+              />
             )}
           </FormControl>
           <FormMessage>{error?.message}</FormMessage>

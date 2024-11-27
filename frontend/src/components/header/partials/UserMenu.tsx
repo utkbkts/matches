@@ -28,7 +28,6 @@ const UserMenu = () => {
     setModal(true);
   };
 
-  console.log("🚀 ~ UserMenu ~ user:", user);
   const handleLogout = async () => {
     try {
       await logout("");

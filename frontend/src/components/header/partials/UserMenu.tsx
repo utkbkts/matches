@@ -10,7 +10,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useLogoutMutation } from "@/store/api/user-api";
-import { useAppSelector } from "@/store/hooks";
+import { setisAuthenticated, setUser } from "@/store/features/user-slice";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -21,9 +22,21 @@ const UserMenu = () => {
   const [authType, setAuthType] = useState<AuthType>(null);
   const { user } = useAppSelector((state) => state.auth);
   const [logout] = useLogoutMutation();
+  const dispatch = useAppDispatch();
   const handleModalOpen = (type: any) => {
     setAuthType(type);
     setModal(true);
+  };
+
+  console.log("🚀 ~ UserMenu ~ user:", user);
+  const handleLogout = async () => {
+    try {
+      await logout("");
+      dispatch(setUser(null));
+      dispatch(setisAuthenticated(false));
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   return (
@@ -51,7 +64,7 @@ const UserMenu = () => {
               </Link>
 
               <Button
-                onClick={logout}
+                onClick={handleLogout}
                 asChild
                 variant={"destructive"}
                 className="w-full"

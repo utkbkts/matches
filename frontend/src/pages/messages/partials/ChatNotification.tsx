@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const ChatNotification = () => {
   return (
     <div className="flex flex-col p-4">
@@ -30,13 +32,12 @@ const ChatNotification = () => {
                 Hi there! How are you doing? I'm looking forward to our chat.
               </td>
               <td className="px-4 py-2">2022-01-25 10:30 AM</td>
-              <td className="px-4 py-6 flex space-x-2">
-                <button className="bg-blue-500 text-white py-1 px-3 rounded-md">
-                  View
-                </button>
-                <button className="bg-gray-400 text-white py-1 px-3 rounded-md">
-                  Delete
-                </button>
+              <td className="px-4 py-6 ">
+                <Link to={"/user-profile/chats"}>
+                  <button className="bg-blue-500 text-white py-1 px-3 rounded-md">
+                    View
+                  </button>
+                </Link>
               </td>
             </tr>
           </tbody>

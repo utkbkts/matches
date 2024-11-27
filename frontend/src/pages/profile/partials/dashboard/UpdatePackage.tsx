@@ -7,21 +7,6 @@ import { Check } from "lucide-react";
 import { useEffect, useState } from "react";
 export const cardPackageData = [
   {
-    id: 1,
-    planId: "Trial Free",
-    planAmount: 0,
-    planInterval: "month",
-    planCurrency: "USD",
-    trialDays: 7,
-    description: "Trial 7 days",
-    features: [
-      {
-        icon: <Check className="w-7 h-7 text-green-400" />,
-        message: "Sınırsız Mesajlaşma",
-      },
-    ],
-  },
-  {
     id: 2,
     planId: "Silver",
     planAmount: 19,

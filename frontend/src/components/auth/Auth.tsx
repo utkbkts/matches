@@ -84,7 +84,6 @@ function Register({ setModal }: any) {
       birthday: new Date(),
       country: "",
       status: "",
-      picture: undefined,
     },
     mode: "onChange",
   });
@@ -126,7 +125,7 @@ function Register({ setModal }: any) {
   }, [isSuccess, isError, registerError, form]);
 
   const onSubmit = async (data: createFormData) => {
-    await createRegister(data);
+    await createRegister({ ...data, picture: image });
   };
   return (
     <div>

@@ -26,6 +26,7 @@ const register = async (req, res, next) => {
       country,
       city,
     } = req.body;
+    console.log("🚀 ~ register ~ picture:", picture);
 
     const emailExisting = await User.findOne({ email });
 
@@ -44,9 +45,10 @@ const register = async (req, res, next) => {
           folder: "match/avatar",
           transformation: [{ width: 500, height: 500, crop: "fill" }],
         });
+        console.log("🚀 ~ register ~ avatarUpload:", avatarUpload);
         pictureData = {
           public_id: avatarUpload.public_id,
-          url: avatarUpload.secure_url,
+          url: avatarUpload.url,
         };
       } catch (error) {
         return next(
@@ -54,6 +56,7 @@ const register = async (req, res, next) => {
         );
       }
     }
+    console.log("🚀 ~ register ~ pictureData:", pictureData);
 
     const user = await User.create({
       name,

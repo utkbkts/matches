@@ -23,7 +23,6 @@ interface Props {
     planAmount: number;
     planCurrency: string;
     planInterval: string;
-    trialDays?: any;
     description: string;
     features: Feature[];
   };
@@ -37,7 +36,6 @@ const CardPackage = ({ packageData }: Props) => {
     planCurrency,
     planId,
     planInterval,
-    trialDays,
   } = packageData;
 
   const [stripeMutation, { isError, error }] = useCreateSubscriptinMutation();
@@ -55,7 +53,6 @@ const CardPackage = ({ packageData }: Props) => {
       planAmount,
       planCurrency,
       planInterval,
-      trialDays,
     };
 
     try {

@@ -9,8 +9,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const subscriptionCreateStripe = async (req, res, next) => {
   try {
-    const { planId, planAmount, planCurrency, planInterval, trialDays } =
-      req.body;
+    const { planId, planAmount, planCurrency, planInterval } = req.body;
 
     if (!planId || !planAmount || !planCurrency || !planInterval) {
       return next(new ErrorHandler("All fields are required", 400));
@@ -36,11 +35,8 @@ const subscriptionCreateStripe = async (req, res, next) => {
           quantity: 1,
         },
       ],
-      subscription_data: {
-        trial_period_days: trialDays,
-      },
       success_url: `${process.env.FRONTEND_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.FRONTEND_URL}/cancel`,
+      cancel_url: `${process.env.FRONTEND_URL}/user-profile/package`,
     });
 
     // Mevcut aboneliği bulma
@@ -57,7 +53,6 @@ const subscriptionCreateStripe = async (req, res, next) => {
         {
           subscription_type: planId,
           stripe_price_id: session.id,
-          trial_days: trialDays,
           amount: planAmount,
           subscription_status: "active",
           subscription_Interval: planInterval,
@@ -70,10 +65,6 @@ const subscriptionCreateStripe = async (req, res, next) => {
                 ? 365 * 24 * 60 * 60 * 1000
                 : 0)
           ),
-          trial_end_date:
-            trialDays > 0
-              ? new Date(Date.now() + trialDays * 24 * 60 * 60 * 1000)
-              : null,
         },
         { new: true }
       );
@@ -83,7 +74,6 @@ const subscriptionCreateStripe = async (req, res, next) => {
         user: req.user._id,
         subscription_type: planId,
         stripe_price_id: session.id,
-        trial_days: trialDays,
         amount: planAmount,
         is_subscribed: true,
         subscription_status: "active",
@@ -97,10 +87,6 @@ const subscriptionCreateStripe = async (req, res, next) => {
               ? 365 * 24 * 60 * 60 * 1000
               : 0)
         ),
-        trial_end_date:
-          trialDays > 0
-            ? new Date(Date.now() + trialDays * 24 * 60 * 60 * 1000)
-            : null,
       });
     }
 

@@ -4,7 +4,6 @@ import { MembersType } from "@/types/types";
 
 const Members = () => {
   const { data } = useMemberAllQuery({});
-  console.log("🚀 ~ Members ~ data:", data);
   return (
     <div className="min-h-screen w-full bg-gray-50">
       <div className="container mx-auto pt-12">

@@ -4,9 +4,8 @@ import Sidebar from "./partials/Sidebar";
 
 const Messages = () => {
   const { messages } = useAppSelector((state) => state.message);
-  const { user } = useAppSelector((state) => state.auth);
   console.log("🚀 ~ Messages ~ messages:", messages);
-
+  const { user } = useAppSelector((state) => state.auth);
   const uniqueUserIds = Array.from(
     new Map(
       messages

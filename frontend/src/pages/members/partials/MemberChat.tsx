@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { dateHandler } from "@/helpers/date-format";
 import { getErrorMessage } from "@/helpers/error-message";
+import useGetSocketMessage from "@/hooks/useGetSocketMessage";
 import {
   createMessagedata,
   createMessageSchema,
@@ -14,12 +15,12 @@ import {
 import { setMessages } from "@/store/features/message-slice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
-const messages = [
+const messagesData = [
   {
     id: 1,
     name: "Mayo Willison",
@@ -80,10 +81,16 @@ const Message = ({ name, message, time, isUser, avatarReceiverId }: Props) => (
 
 const MemberChat = () => {
   const { user } = useAppSelector((state) => state.auth);
+  const { messages } = useAppSelector((state) => state.message);
   const dispatch = useAppDispatch();
+  const lastMessageRef = useRef<HTMLDivElement | null>(null);
+
   const { id } = useParams();
+
   const [sendMutation, { isLoading, isSuccess, isError, error }] =
     useSendMessageMutation();
+
+  useGetSocketMessage();
 
   const { data } = useGetMessageQuery(id);
   const senderId = user?._id;
@@ -92,7 +99,6 @@ const MemberChat = () => {
     register,
     handleSubmit,
     reset,
-    getValues,
     formState: { errors },
   } = useForm<createMessagedata>({
     resolver: zodResolver(createMessageSchema),
@@ -101,12 +107,11 @@ const MemberChat = () => {
     },
     mode: "onChange",
   });
-  const messageValue = getValues("message");
   useEffect(() => {
     if (data) {
       dispatch(setMessages(data));
     }
-  }, [data, dispatch]);
+  }, [data]);
   useEffect(() => {
     if (isSuccess) {
       toast.success("Success");
@@ -118,14 +123,21 @@ const MemberChat = () => {
   }, [isError, isSuccess, error]);
 
   const onSubmit = async (data: any) => {
+    console.log("🚀 ~ onSubmit ~ data:", data);
     try {
       await sendMutation({ body: { ...data }, id });
-      setMessages({ ...data, messageValue });
+      dispatch(setMessages([...messages, data]));
       reset();
     } catch (error) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
   return (
     <>
       <div className="flex-grow flex flex-col h-full p-4 relative">
@@ -144,7 +156,7 @@ const MemberChat = () => {
               </div>
             </div>
             <div className="flex-grow overflow-y-auto space-y-4">
-              {messages?.map((msg) => (
+              {messagesData?.map((msg) => (
                 <>
                   <Message
                     key={msg.id}
@@ -172,18 +184,29 @@ const MemberChat = () => {
             <h1 className="text-muted-foreground mb-2">Chat</h1>
             <Separator />
             <div className="flex-grow overflow-y-auto space-y-4">
-              {data?.map((msg: any) => (
-                <Message
-                  key={msg._id}
-                  name={
-                    msg.senderId._id === senderId ? "You" : msg.receiverId.name
-                  }
-                  message={msg.message}
-                  time={msg.createdAt}
-                  isUser={msg.senderId._id === senderId}
-                  avatarReceiverId={msg.receiverId.picture.url}
-                />
-              ))}
+              {messages.length > 0 &&
+                messages?.map((msg: any, index: number) => {
+                  return (
+                    <div
+                      key={msg?._id}
+                      ref={
+                        index === messages.length - 1 ? lastMessageRef : null
+                      }
+                    >
+                      <Message
+                        name={
+                          msg?.senderId?._id === senderId
+                            ? "You"
+                            : msg?.receiverId?.name
+                        }
+                        message={msg?.message}
+                        time={msg?.createdAt}
+                        isUser={msg?.senderId?._id === senderId}
+                        avatarReceiverId={msg?.receiverId?.picture?.url}
+                      />
+                    </div>
+                  );
+                })}
             </div>
             {/* Chat Input */}
             <div>

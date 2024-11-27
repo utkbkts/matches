@@ -10,6 +10,7 @@ import bodyParser from "body-parser";
 
 //SOCKET IO
 
+import { app, server } from "./socket.js";
 //DB
 import { ConnectedDatabase } from "./db/connected.db.js";
 //ROUTES
@@ -23,7 +24,6 @@ import { stripeWebhook } from "./controllers/stripe.webhooks.js";
 const __dirname = path.resolve();
 //dotEnv config
 dotenv.config();
-const app = express();
 //parse json request url
 app.use(express.json({ limit: "150mb" }));
 app.use(express.urlencoded({ extended: true, limit: "150mb" }));
@@ -65,7 +65,7 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-const server = app.listen(process.env.PORT, () => {
+server.listen(process.env.PORT, () => {
   ConnectedDatabase();
   console.log(`server is running PORT:${process.env.PORT}`);
 });

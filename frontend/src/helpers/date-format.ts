@@ -2,10 +2,9 @@ import {
   differenceInDays,
   differenceInYears,
   format,
-  formatDistanceToNow,
   parseISO,
 } from "date-fns";
-
+import moment from "moment";
 const calculateAge = (dateOfBirth: string): number => {
   return differenceInYears(new Date(), new Date(dateOfBirth));
 };
@@ -49,59 +48,61 @@ export const calculateProgress = (startDate: any, endDate: any) => {
   return Math.round(progress); // Yüzdeyi yuvarlayarak döndür
 };
 
+// Tarih bilgisini işleyen bir fonksiyon
 export const dateHandler = (date: any) => {
   // Şu anki zamanı al
-  const now = new Date();
-
-  // Verilen tarihi parse et
-  const parsedDate = parseISO(date);
-
-  // Verilen tarihin şu ana göre ne kadar önce olduğunu hesapla (örneğin, "3 days", "2 hours")
-  const time = formatDistanceToNow(parsedDate, { addSuffix: true });
-
+  let now = moment();
+  // Verilen tarihi moment nesnesine dönüştür
+  let momentDate = moment(date);
   // Verilen tarihi saat ve dakika formatında al ("HH:mm")
-  const dateByHourAndMin = format(parsedDate, "HH:mm");
+  let dateByHourAndMin = momentDate.format("HH:mm");
+  // Verilen tarihin şu ana göre ne kadar önce olduğunu hesapla (örneğin, "3 days", "2 hours")
+  let time = momentDate.fromNow(true);
 
   // Günü belirleyen yardımcı fonksiyon
   const getDay = () => {
-    const days = parseInt(time.split(" ")[0]);
+    // Geçen gün sayısını al
+    let days = time.split(" ")[0];
 
     // Eğer gün sayısı 8'den küçükse, haftanın gününü döndür
-    if (days < 8) {
-      return format(now.setDate(now.getDate() - days), "EEEE");
+    if (Number(days) < 8) {
+      return now.subtract(Number(days), "days").format("dddd");
     } else {
       // 8 gün veya daha fazlaysa, tarihi "GG/AA/YYYY" formatında döndür
-      return format(parsedDate, "dd/MM/yyyy");
+      return momentDate.format("DD/MM/YYYY");
     }
   };
 
   // Eğer tarih "birkaç saniye" öncesiyse "Şimdi" olarak döndür
-  if (time === "less than a minute ago") {
+  if (time === "a few seconds") {
     return "Now";
   }
 
   // Eğer tarih dakika içeriyorsa, uygun formatta döndür
-  if (time.includes("minute")) {
-    const mins = time.split(" ")[0];
-    if (mins === "1") {
+  if (time.search("minute") !== -1) {
+    // Kaç dakika olduğunu al
+    let mins = time.split(" ")[0];
+    if (mins === "a") {
+      // Eğer "a minute" ise, "1 min" olarak döndür
       return "1 min";
     } else {
+      // Diğer durumlarda dakikayı "X min" formatında döndür
       return `${mins} min`;
     }
   }
 
   // Eğer tarih saat içeriyorsa, saati ve dakikayı döndür
-  if (time.includes("hour")) {
+  if (time.search("hour") !== -1) {
     return dateByHourAndMin;
   }
 
   // Eğer tarih "bir gün" öncesiyse, "Dün" olarak döndür
-  if (time === "about 1 day ago") {
+  if (time === "a day") {
     return "Yesterday";
   }
 
   // Eğer tarih gün içeriyorsa, getDay fonksiyonunu çağır ve sonucu döndür
-  if (time.includes("days")) {
+  if (time.search("days") !== -1) {
     return getDay();
   }
 

@@ -9,7 +9,6 @@ export const messageSlice = createSlice({
   initialState,
   reducers: {
     setMessages(state, action) {
-      console.log("🚀 ~ setMessages ~ action:", action);
       state.messages = action.payload;
     },
   },

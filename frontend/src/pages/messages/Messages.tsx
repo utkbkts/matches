@@ -1,18 +1,20 @@
 import { useAppSelector } from "@/store/hooks";
 import ChatNotification from "./partials/ChatNotification";
 import Sidebar from "./partials/Sidebar";
+import useGetSocketMessage from "@/hooks/useGetSocketMessage";
 
 const Messages = () => {
   const { messages } = useAppSelector((state) => state.message);
-  console.log("🚀 ~ Messages ~ messages:", messages);
   const { user } = useAppSelector((state) => state.auth);
-  const uniqueUserIds = Array.from(
-    new Map(
-      messages
-        .filter((msg: any) => msg.receiverId._id !== user?._id)
-        .map((msg: any) => [msg.receiverId._id, msg])
-    ).values()
+  useGetSocketMessage();
+
+  const uniqueMessagesMap = new Map(
+    messages
+      .filter((item: any) => item.senderId._id !== user?._id)
+      .map((item: any) => [item.senderId._id, item])
   );
+
+  const uniqueMessages = Array.from(uniqueMessagesMap.values());
 
   return (
     <div className="py-6 px-4">
@@ -21,8 +23,8 @@ const Messages = () => {
           <Sidebar />
         </div>
         <div className="w-full mt-10 items-center h-[80vh] shadow-xl p-4 col-span-10">
-          {uniqueUserIds.map((msg: any) => (
-            <ChatNotification msg={msg} />
+          {uniqueMessages.map((msg: any) => (
+            <ChatNotification key={msg.senderId._id} msg={msg} />
           ))}
         </div>
       </div>

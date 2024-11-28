@@ -1,37 +1,32 @@
 import calculateAge from "@/helpers/date-format";
 import { getErrorMessage } from "@/helpers/error-message";
 import { useLikedMutation } from "@/store/api/user-api";
-import { useAppSelector } from "@/store/hooks";
 import { MembersType } from "@/types/types";
 import { Heart } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
-const MatchesItems = ({ member }: { member: MembersType }) => {
+const MatchesItems = ({
+  member,
+  liked,
+}: {
+  member: MembersType;
+  liked: any;
+}) => {
   const [likedMutation, { isSuccess, isError, error, data }] =
     useLikedMutation();
-  const { user } = useAppSelector((state) => state.auth);
-  const [isLiked, setIsLiked] = useState(false);
 
-  //is Liked added
-  useEffect(() => {
-    if (user && member) {
-      const liked = member.liked.some((item) => item.user === user._id);
-      setIsLiked(liked);
-    }
-  }, [user, member]);
-
-  //RTK query
   useEffect(() => {
     if (isSuccess && data) {
       toast.success(data.message);
     }
+
     if (isError) {
       const errorMessage = getErrorMessage(error);
       toast.error(errorMessage);
     }
-  }, [error, isError, isSuccess, data]);
+  }, [isSuccess, data, isError, error]);
 
   const handleClick = async (id: any) => {
     try {
@@ -57,8 +52,8 @@ const MatchesItems = ({ member }: { member: MembersType }) => {
             className="object-cover w-[250px] h-[250px] rounded-full"
           />
           <div className="text-white relative z-50">
-            <h2 className="text-lg font-semibold ">
-              {member.name},{calculateAge(member?.birthday)}
+            <h2 className="text-lg font-semibold">
+              {member.name}, {calculateAge(member?.birthday)}
             </h2>
             <div className="flex items-center gap-1">
               <p className="text-sm">{member.country}</p>-
@@ -72,8 +67,8 @@ const MatchesItems = ({ member }: { member: MembersType }) => {
         >
           <Heart
             className="cursor-pointer"
-            stroke={isLiked ? "red" : "currentColor"}
-            fill={isLiked ? "red" : "none"}
+            stroke={liked ? "red" : "currentColor"}
+            fill={liked ? "red" : "none"}
           />
         </div>
       </div>

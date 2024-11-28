@@ -25,6 +25,7 @@ const FilterSection = () => {
     search,
     minAge,
     maxAge,
+    ...(gender && { gender }),
   };
   if (gender) {
     params.gender = gender;
@@ -36,6 +37,12 @@ const FilterSection = () => {
   const filterUser = data?.users?.filter(
     (item: SignupType) => item._id !== user?._id
   );
+  const favoriteUserIds = user?.myFavorite?.map((item: any) => item.user);
+
+  const filtered = filterUser?.filter((item: any) =>
+    favoriteUserIds?.includes(item._id)
+  );
+
   // Handle gender filter
   const handleGenderChange = (selectedGender: string) => {
     setCurrentPage(1);
@@ -121,9 +128,18 @@ const FilterSection = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 container mx-auto place-items-center">
-        {filterUser?.map((member: MembersType) => (
-          <MatchesItems member={member} key={member._id} />
-        ))}
+        {filterUser?.map((member: MembersType) => {
+          const isLiked = filtered?.some(
+            (item: any) => item._id === member._id
+          );
+          return (
+            <MatchesItems
+              key={member._id}
+              member={member}
+              liked={isLiked} // Pass the "liked" state for each member
+            />
+          );
+        })}
       </div>
       <div className="mt-12 container mx-auto w-full ">
         <Separator />

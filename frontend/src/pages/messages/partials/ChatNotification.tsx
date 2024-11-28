@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 const ChatNotification = ({ msg }: any) => {
   console.log("🚀 ~ ChatNotification ~ msg:", msg);
+
   return (
     <div className="flex flex-col p-4">
       <div className="">
@@ -23,12 +24,12 @@ const ChatNotification = ({ msg }: any) => {
                 <div className="relative">
                   <span className="absolute bg-green-400 h-4 w-4 rounded-full right-0 top-0"></span>
                   <img
-                    src={msg?.receiverId?.picture?.url}
+                    src={msg?.senderId?.picture?.url}
                     className="w-12 h-12 rounded-full"
                     alt="user"
                   />
                 </div>
-                <p>{msg?.receiverId?.name}</p>
+                <p>{msg?.senderId?.name}</p>
               </td>
               <td className="px-5 py-2 ">{msg?.message}</td>
               <td className="px-4 py-2">{dateHandler(msg?.createdAt)}</td>

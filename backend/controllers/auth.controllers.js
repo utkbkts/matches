@@ -26,7 +26,6 @@ const register = async (req, res, next) => {
       country,
       city,
     } = req.body;
-    console.log("🚀 ~ register ~ picture:", picture);
 
     const emailExisting = await User.findOne({ email });
 

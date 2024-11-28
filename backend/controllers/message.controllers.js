@@ -27,31 +27,25 @@ const sendMessage = async (req, res) => {
       message,
     });
 
-    // Yeni mesajı ve sohbeti kaydedelim
     if (newMessage) {
       conversation.messages.push(newMessage._id);
     }
 
     await Promise.all([conversation.save(), newMessage.save()]);
 
-    // Mesajı popüle edelim (senderId ve receiverId ile birlikte)
     const populatedMessage = await Message.findById(newMessage._id)
-      .populate("senderId", "name email picture") // senderId bilgilerini popüle et
-      .populate("receiverId", "name email picture"); // receiverId bilgilerini popüle et
+      .populate("senderId", "name email picture")
+      .populate("receiverId", "name email picture");
 
-    // Eğer alıcı online ise socket ile gönderelim
     const receiverSocketId = getReceiverSocketId(receiverId);
     if (receiverSocketId) {
-      io.to(receiverSocketId).emit("newMessage", populatedMessage); // Popüle edilmiş mesajı gönder
+      io.to(receiverSocketId).emit("newMessage", populatedMessage);
     }
 
-    // Başarılı bir yanıt dönelim
-    return res
-      .status(201)
-      .json({
-        message: "Message sent successfully",
-        newMessage: populatedMessage,
-      });
+    return res.status(201).json({
+      message: "Message sent successfully",
+      newMessage: populatedMessage,
+    });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

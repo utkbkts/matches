@@ -14,6 +14,7 @@ export type SignupType = {
   gender: string;
   birthday: string;
   currentSubscription?: any;
+  myFavorite?: any;
 };
 
 export type MembersType = {

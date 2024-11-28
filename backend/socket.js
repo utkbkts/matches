@@ -40,7 +40,7 @@ io.on("connection", (socket) => {
     delete users[userId];
 
     // Güncellenmiş online kullanıcı listesini tüm bağlı istemcilere gönderiyor.
-    io.emit("getonline", Object.keys(users));
+    io.emit("getOnlineUsers", Object.keys(users));
   });
 });
 export { app, io, server };

@@ -55,7 +55,7 @@ const HomePage = () => {
         >
           <ChevronRight size={40} />
         </div>
-        <div className="bg-[#ED147D] w-full absolute bottom-0 h-[10vh]">
+        <div className="bg-[#ED147D] w-full absolute bottom-0 h-[10vh] lg:block hidden">
           <div className="flex items-center justify-between h-full container mx-auto">
             <div>
               <img src={avatar} alt="avatar" className="animate-img" />
@@ -79,7 +79,7 @@ const HomePage = () => {
 
       {/* SECTION ABOUT*/}
       <div className="container mx-auto">
-        <section className="h-[70vh]">
+        <section className="md:h-[70vh] min-h-screen">
           <SectionAbout />
         </section>
 
@@ -131,7 +131,7 @@ const HomePage = () => {
         </section>
 
         {/*SECTION FEATURES */}
-        <section className="mt-24 h-[80vh]">
+        <section className="mt-24 min-h-screen">
           <div className="flex flex-col items-center">
             <h1 className="text-center text-4xl font-bold bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] bg-clip-text text-transparent h-12">
               You can get more message rights by becoming Premium.
@@ -141,14 +141,14 @@ const HomePage = () => {
             </span>
             <Separator />
           </div>
-          <div className="grid grid-cols-3 mt-12 gap-4">
+          <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 mt-12 gap-4 ">
             {cardPackageData.map((packageData) => (
               <CardPackage packageData={packageData} />
             ))}
           </div>
         </section>
         {/*SECTION CUSTOMER */}
-        <section className="mt-24 grid grid-cols-4 gap-2">
+        <section className="mt-24 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-2">
           {customerData.map((item) => (
             <SectionCustomer key={item.id} customer={item} />
           ))}

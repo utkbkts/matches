@@ -8,11 +8,11 @@ const SectionAbout = () => {
       <div className="absolute -z-10  left-44">
         <img src={img1} alt="bg-image" title="background" />
       </div>
-      <div className="flex flex-col gap-4 items-center pt-8">
-        <h1 className="font-bold text-[40px]">
+      <div className="flex flex-col gap-4 items-center pt-8 text-center">
+        <h1 className="font-bold text-[40px]  ">
           It all starts with a <span className="text-red-500">Date</span>{" "}
         </h1>
-        <p className="text-muted-foreground text-center w-[750px]">
+        <p className="text-muted-foreground text-center md:w-[750px] w-full">
           You find us, finally, and you are already in love. More than 5.000.000
           around the world already shared the same experience and uses our
           system. Joining us today just got easier!
@@ -26,7 +26,7 @@ const SectionAbout = () => {
           </Button>
         </div>
       </div>
-      <div className="grid grid-cols-4">
+      <div className="grid md:grid-cols-4 sm:grid-cols-3 grid-cols-1">
         {dataAbout.map((item) => (
           <div className="flex flex-col items-center justify-center">
             <img src={item.image} alt="status-image" title={item.content} />

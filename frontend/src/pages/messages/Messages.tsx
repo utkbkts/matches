@@ -2,6 +2,8 @@ import { useAppSelector } from "@/store/hooks";
 import ChatNotification from "./partials/ChatNotification";
 import Sidebar from "./partials/Sidebar";
 import useGetSocketMessage from "@/hooks/useGetSocketMessage";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 const Messages = () => {
   const { messages } = useAppSelector((state) => state.message);
@@ -15,6 +17,17 @@ const Messages = () => {
   );
 
   const uniqueMessages = Array.from(uniqueMessagesMap.values());
+
+  if (!user) {
+    return (
+      <Link
+        className="flex items-center justify-center flex-col h-screen"
+        to={`/`}
+      >
+        <Button>Please log in to view this page.</Button>
+      </Link>
+    );
+  }
 
   return (
     <div className="py-6 px-4">

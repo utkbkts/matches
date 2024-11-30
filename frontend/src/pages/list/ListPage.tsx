@@ -3,11 +3,12 @@ import { Link } from "react-router-dom"; // Eğer Link'i kullanıyorsanız impor
 import ListCard from "./partials/ListCard";
 import { useGetMemberByIdQuery } from "@/store/api/member-api";
 import { Button } from "@/components/ui/button";
+import { useAppSelector } from "@/store/hooks";
 
 const ListPage = () => {
   const [active, setActive] = useState<number | null>(1);
-  const { data, isLoading, isError } = useGetMemberByIdQuery(null);
-
+  const { data, isLoading } = useGetMemberByIdQuery(null);
+  const { user } = useAppSelector((state) => state.auth);
   const toggleHandler = (id: number) => {
     setActive(id);
   };
@@ -16,8 +17,15 @@ const ListPage = () => {
     return <div>Loading...</div>;
   }
 
-  if (isError) {
-    return <div>Error loading data</div>;
+  if (!user) {
+    return (
+      <Link
+        className="flex items-center justify-center flex-col h-screen"
+        to={`/`}
+      >
+        <Button>Please log in to view this page.</Button>
+      </Link>
+    );
   }
 
   const myFavorite = data?.user?.myFavorite || [];

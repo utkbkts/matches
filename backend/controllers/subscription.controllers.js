@@ -10,7 +10,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const subscriptionCreateStripe = async (req, res, next) => {
   try {
     const { planId, planAmount, planCurrency, planInterval } = req.body;
-
     if (!planId || !planAmount || !planCurrency || !planInterval) {
       return next(new ErrorHandler("All fields are required", 400));
     }
@@ -46,7 +45,7 @@ const subscriptionCreateStripe = async (req, res, next) => {
     });
 
     let subscription;
-    if (existingSubscription) {
+    if (existingSubscription && userId) {
       // Eğer mevcut bir abonelik varsa, güncelle
       subscription = await Subscription.findByIdAndUpdate(
         existingSubscription._id,

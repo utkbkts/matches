@@ -4,7 +4,12 @@ import io, { Socket } from "socket.io-client";
 
 interface SocketContextType {
   socket: Socket | null;
-  onlineUsers: string[];
+  onlineUsers: {
+    total: number;
+    male: number;
+    female: number;
+    onlineUsers: [];
+  };
 }
 
 const SocketContext = createContext<SocketContextType>({
@@ -27,7 +32,7 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
 
       setSocket(newSocket);
 
-      newSocket.on("getOnlineUsers", (users: string[]) => {
+      newSocket.on("online-status", (users: string[]) => {
         setOnlineUsers(users);
       });
 

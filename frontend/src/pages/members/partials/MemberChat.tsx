@@ -42,7 +42,7 @@ interface Props {
   message: string;
   time: string;
   isUser: boolean;
-  avatarReceiverId: string;
+  avatarReceiverId?: string;
 }
 
 const Message = ({ name, message, time, isUser, avatarReceiverId }: Props) => (
@@ -141,18 +141,24 @@ const MemberChat = () => {
   return (
     <>
       <div className="flex-grow flex flex-col h-full p-4 relative">
-        {user?.currentSubscription === null ? (
+        {user?.currentSubscription === null || user === null ? (
           <>
-            <div className="backdrop-blur-lg bg-gradient-to-r from-white/40 to-white/10 absolute left-0 top-0 w-full h-[80vh] flex items-center justify-center">
+            <div className="backdrop-blur-lg bg-gradient-to-r from-white/40 to-white/10 absolute left-0 top-0 w-full h-[80vh] flex items-center justify-center z-50">
               <div className="border border-gray-300 rounded-lg shadow-lg bg-white/70 h-[400px] w-[600px] p-8 flex flex-col items-center justify-center space-y-6">
                 <h1 className="text-2xl font-semibold text-gray-800 text-center">
                   Buy the package to talk to the person you like now
                 </h1>
-                <Link to={"/user-profile/package"}>
-                  <button className="px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full shadow-md hover:shadow-lg transition duration-300 hover:scale-105">
-                    Buy Package
+                {!user ? (
+                  <button className="px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full shadow-md hover:shadow-lg transition duration-300 hover:scale-105 cursor-not-allowed">
+                    please login
                   </button>
-                </Link>
+                ) : (
+                  <Link to={"/user-profile/package"}>
+                    <button className="px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full shadow-md hover:shadow-lg transition duration-300 hover:scale-105">
+                      Buy Package
+                    </button>
+                  </Link>
+                )}
               </div>
             </div>
             <div className="flex-grow overflow-y-auto space-y-4">

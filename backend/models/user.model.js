@@ -92,6 +92,10 @@ const userSchema = new mongoose.Schema(
         },
       },
     ],
+    isOnline: {
+      type: Boolean,
+      default: false,
+    },
     myFavorite: [
       {
         user: {

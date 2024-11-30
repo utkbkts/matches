@@ -2,6 +2,7 @@ import { Server } from "socket.io";
 import http from "http";
 import express from "express";
 import dotenv from "dotenv";
+import User from "./models/user.model.js";
 
 dotenv.config();
 
@@ -16,31 +17,62 @@ const io = new Server(server, {
   },
 });
 
-export const getReceiverSocketId = (receiverId) => {
-  return users[receiverId];
+const connectedUsers = {};
+
+const updateOnlineStatus = async () => {
+  try {
+    const onlineUsers = await User.find({ isOnline: true });
+    const maleCount = onlineUsers.filter(
+      (user) => user.gender === "male"
+    ).length;
+    const femaleCount = onlineUsers.filter(
+      (user) => user.gender === "female"
+    ).length;
+
+    io.emit("online-status", {
+      total: onlineUsers.length,
+      male: maleCount,
+      female: femaleCount,
+      onlineUsers,
+    });
+  } catch (error) {
+    console.error("Error updating online status:", error.message);
+  }
 };
 
-const users = {};
+const handleDisconnect = async (userId) => {
+  try {
+    if (userId) {
+      delete connectedUsers[userId];
+      await User.findByIdAndUpdate(userId, { isOnline: false });
+    }
 
-io.on("connection", (socket) => {
-  // Kullanıcı ID'si socket bağlantısındaki query'den alınıyor.
-  const userId = socket.handshake.query.userId;
-
-  // Eğer userId mevcutsa, bu kullanıcı ID'sini socket ID'si ile ilişkilendiriyor.
-  if (userId) {
-    users[userId] = socket.id;
+    await updateOnlineStatus();
+  } catch (error) {
+    console.error("Error handling disconnect:", error.message);
   }
+};
 
-  // Tüm online kullanıcıların listesi, bağlı olan istemcilere gönderiliyor.
-  io.emit("getOnlineUsers", Object.keys(users));
+// Socket.IO bağlantı yönetimi
+io.on("connection", async (socket) => {
+  try {
+    const userId = socket.handshake.query.userId;
 
-  // İstemci bağlantısı kesildiğinde olay dinleniyor.
-  socket.on("disconnect", () => {
-    // Kesilen bağlantının kullanıcı ID'sini users nesnesinden kaldırıyor.
-    delete users[userId];
+    if (userId) {
+      connectedUsers[userId] = socket.id;
+      await User.findByIdAndUpdate(userId, { isOnline: true });
+    }
 
-    // Güncellenmiş online kullanıcı listesini tüm bağlı istemcilere gönderiyor.
-    io.emit("getOnlineUsers", Object.keys(users));
-  });
+    await updateOnlineStatus();
+
+    socket.on("disconnect", () => handleDisconnect(userId));
+  } catch (error) {
+    console.error("Error during connection handling:", error.message);
+  }
 });
+
+export const getReceiverSocketId = (receiverId) => {
+  return connectedUsers[receiverId];
+};
+
 export { app, io, server };

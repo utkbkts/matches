@@ -1,8 +1,16 @@
 import { Button } from "@/components/ui/button";
 import img1 from "/slider/map-bg-1.png";
-import { dataAbout } from "../data/index-data";
+import { useSocketContext } from "@/context/SocketContext";
+import img2 from "/status_01.png";
+import img3 from "/status_02.png";
+import img4 from "/status_03.png";
+import img5 from "/status_04.png";
+import { useMemberAllQuery } from "@/store/api/member-api";
 
 const SectionAbout = () => {
+  const { onlineUsers } = useSocketContext();
+  const { data } = useMemberAllQuery({});
+
   return (
     <div className="mt-24 relative">
       <div className="absolute -z-10  left-44">
@@ -27,13 +35,36 @@ const SectionAbout = () => {
         </div>
       </div>
       <div className="grid md:grid-cols-4 sm:grid-cols-3 grid-cols-1">
-        {dataAbout.map((item) => (
-          <div className="flex flex-col items-center justify-center">
-            <img src={item.image} alt="status-image" title={item.content} />
-            <h2 className="text-center font-bold text-[24px]">{item.title}</h2>
-            <p className="text-muted-foreground text-center">{item.content}</p>
-          </div>
-        ))}
+        <div className="flex flex-col items-center justify-center">
+          <img src={img2} alt="status-image" title={"status-online"} />
+          <h2 className="text-center font-bold text-[24px]">
+            {data?.members?.length}
+          </h2>
+          <p className="text-muted-foreground text-center">Members in total</p>
+        </div>
+        <div className="flex flex-col items-center justify-center">
+          <img src={img3} alt="status-image" title={"status-online"} />
+          <h2 className="text-center font-bold text-[24px]">
+            {" "}
+            {onlineUsers?.total}
+          </h2>
+          <p className="text-muted-foreground text-center">Online Total</p>
+        </div>
+        <div className="flex flex-col items-center justify-center">
+          <img src={img4} alt="status-image" title={"status-online"} />
+          <h2 className="text-center font-bold text-[24px]">
+            {" "}
+            {onlineUsers?.female}
+          </h2>
+          <p className="text-muted-foreground text-center">Online women</p>
+        </div>
+        <div className="flex flex-col items-center justify-center">
+          <img src={img5} alt="status-image" title={"status-online"} />
+          <h2 className="text-center font-bold text-[24px]">
+            {onlineUsers?.male}
+          </h2>
+          <p className="text-muted-foreground text-center">Online men</p>
+        </div>
       </div>
     </div>
   );

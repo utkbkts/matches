@@ -1,7 +1,3 @@
-import img2 from "/status_01.png";
-import img3 from "/status_02.png";
-import img4 from "/status_03.png";
-import img5 from "/status_04.png";
 //avatar
 import avatar1 from "/avatar/avatar-1.png";
 import avatar2 from "/avatar/avatar-2.png";
@@ -12,33 +8,6 @@ import slider1 from "/slider/slider-2.jpg";
 import slider2 from "/slider/slider-3.jpg";
 import slider3 from "/slider/slider-4.jpg";
 import slider4 from "/slider/slider-5.jpg";
-
-export const dataAbout = [
-  {
-    id: 1,
-    image: img2,
-    title: 7,
-    content: "Members in total",
-  },
-  {
-    id: 2,
-    image: img3,
-    title: 20.0,
-    content: "Members online",
-  },
-  {
-    id: 3,
-    image: img4,
-    title: 7,
-    content: "Woman online",
-  },
-  {
-    id: 3,
-    image: img5,
-    title: 7,
-    content: "Men online",
-  },
-];
 
 export const customerData = [
   {

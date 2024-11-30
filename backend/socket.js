@@ -53,7 +53,6 @@ const handleDisconnect = async (userId) => {
   }
 };
 
-// Socket.IO bağlantı yönetimi
 io.on("connection", async (socket) => {
   try {
     const userId = socket.handshake.query.userId;
@@ -73,6 +72,10 @@ io.on("connection", async (socket) => {
 
 export const getReceiverSocketId = (receiverId) => {
   return connectedUsers[receiverId];
+};
+
+export const notificationMessage = (notication) => {
+  io.emit("notification", notication);
 };
 
 export { app, io, server };

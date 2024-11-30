@@ -1,6 +1,6 @@
 import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
-import { getReceiverSocketId, io } from "../socket.js";
+import { getReceiverSocketId, io, notificationMessage } from "../socket.js";
 
 const sendMessage = async (req, res) => {
   const { message } = req.body;
@@ -41,7 +41,8 @@ const sendMessage = async (req, res) => {
     if (receiverSocketId) {
       io.to(receiverSocketId).emit("newMessage", populatedMessage);
     }
-
+    //message noti
+    io.to(notificationMessage()).emit("notification", populatedMessage);
     return res.status(201).json({
       message: "Message sent successfully",
       newMessage: populatedMessage,
@@ -67,7 +68,6 @@ const getMessages = async (req, res, next) => {
   if (!conversation) return res.status(200).json([]);
 
   const messages = conversation.messages;
-
   return res.status(200).json(messages);
 };
 

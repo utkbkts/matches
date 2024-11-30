@@ -69,11 +69,10 @@ const FilterSection = () => {
   // Handle search
 
   const handleSearch = (search: string) => {
-    searchParams.has("gender");
     setCurrentPage(1);
     setSearchParams({
       page: "1",
-      gender: gender || "",
+      gender: gender,
       search: search,
       min: minAge,
       max: maxAge,
@@ -124,7 +123,13 @@ const FilterSection = () => {
           </div>
         </div>
         <div className="xl:hidden block">
-          <MobileTopBar />
+          <MobileTopBar
+            handleSearch={handleSearch}
+            membersData={filterUser}
+            handleResetFilters={handleResetFilters}
+            handleAgeRange={handleAgeRange}
+            handleGenderChange={handleGenderChange}
+          />
         </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 container mx-auto place-items-center">

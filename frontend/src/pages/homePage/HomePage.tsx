@@ -64,7 +64,7 @@ const HomePage = () => {
               <h1 className="text-white font-bold text-[35px]">
                 Start your love story
               </h1>
-              <span className="font-semibold text-white">
+              <span className="font-semibold text-white pb-2">
                 Find love with our dating site !
               </span>
             </div>

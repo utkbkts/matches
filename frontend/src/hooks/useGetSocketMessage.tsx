@@ -10,8 +10,9 @@ const useGetSocketMessage = () => {
 
   useEffect(() => {
     if (!socket) {
-      return 
+      return;
     }
+
     socket.on("newMessage", (newMessage) => {
       dispatch(setMessages([...messages, newMessage]));
     });
@@ -19,6 +20,7 @@ const useGetSocketMessage = () => {
     return () => {
       socket.off("newMessage");
     };
-  }, [socket, messages]);
+  }, [socket, dispatch]);
 };
+
 export default useGetSocketMessage;

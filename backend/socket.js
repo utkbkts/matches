@@ -75,8 +75,15 @@ export const getReceiverSocketId = (receiverId) => {
   return connectedUsers[receiverId];
 };
 
-export const notificationMessage = (notication) => {
-  io.emit("notification", notication);
+export const notifyOrderStatusUpdated = (userId, notification) => {
+  const socketId = connectedUsers[userId];
+  console.log("🚀 ~ notifyOrderStatusUpdated ~ socketId:", socketId);
+  if (socketId) {
+    io.to(socketId).emit("notification", {
+      messages: "New Message",
+      notification,
+    });
+  }
 };
 
 export { app, io, server };

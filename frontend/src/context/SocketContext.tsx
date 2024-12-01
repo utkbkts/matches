@@ -37,21 +37,21 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     onlineUsers: [],
   });
 
+  console.log("🚀 ~ SocketProvider ~ onlineUsers:", onlineUsers);
+
   useEffect(() => {
-    if (user && user._id) {
-      const newSocket = io(import.meta.env.VITE_REACT_APP_BASE_URL, {
-        query: { userId: user._id },
-      });
-      setSocket(newSocket);
+    const newSocket = io(import.meta.env.VITE_REACT_APP_BASE_URL, {
+      query: { userId: user ? user._id : undefined },
+    });
+    setSocket(newSocket);
 
-      newSocket.on("online-status", (users) => {
-        setOnlineUsers(users);
-      });
+    newSocket.on("online-status", (users) => {
+      setOnlineUsers(users);
+    });
 
-      return () => {
-        newSocket.disconnect();
-      };
-    }
+    return () => {
+      newSocket.disconnect();
+    };
   }, [user]);
 
   return (

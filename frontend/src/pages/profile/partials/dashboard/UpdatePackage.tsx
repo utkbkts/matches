@@ -16,15 +16,15 @@ export const cardPackageData = [
     features: [
       {
         icon: <Check className="w-7 h-7 text-green-400" />,
-        message: "Sınırsız Mesajlaşma",
+        message: "Unlimited messaging",
       },
       {
         icon: <Check className="w-7 h-7 text-green-400" />,
-        message: "Gelişmiş Destek",
+        message: "Advanced support",
       },
       {
         icon: <Check className="w-7 h-7 text-green-400" />,
-        message: "Özel Profil Özellikleri",
+        message: "Special profile features",
       },
     ],
   },
@@ -38,15 +38,15 @@ export const cardPackageData = [
     features: [
       {
         icon: <Check className="w-7 h-7 text-green-400" />,
-        message: "Sınırsız Mesajlaşma",
+        message: "Unlimited messaging",
       },
       {
         icon: <Check className="w-7 h-7 text-green-400" />,
-        message: "VIP Destek",
+        message: "VIP support",
       },
       {
         icon: <Check className="w-7 h-7 text-green-400" />,
-        message: "Yüksek Kalitede Eşleşmeler",
+        message: "High quality matches",
       },
     ],
   },
@@ -60,15 +60,15 @@ export const cardPackageData = [
     features: [
       {
         icon: <Check className="w-7 h-7 text-green-400" />,
-        message: "Sınırsız Mesajlaşma",
+        message: "Unlimited messaging",
       },
       {
         icon: <Check className="w-7 h-7 text-green-400" />,
-        message: "Özel Danışmanlık",
+        message: "Special Consultancy",
       },
       {
         icon: <Check className="w-7 h-7 text-green-400" />,
-        message: "Gelişmiş Arama Filtreleri",
+        message: "High quality matches",
       },
     ],
   },

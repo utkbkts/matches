@@ -23,8 +23,7 @@ export const userApi = createApi({
           const { data } = await queryFulfilled;
           dispatch(setUser(data));
           dispatch(setisAuthenticated(true));
-        } catch (error) {
-          console.error("Error fetching user data:", error);
+        } catch (_error) {
         } finally {
           dispatch(setLoading(false));
         }

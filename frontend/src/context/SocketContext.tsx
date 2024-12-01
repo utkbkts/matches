@@ -37,8 +37,6 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     onlineUsers: [],
   });
 
-  console.log("🚀 ~ SocketProvider ~ onlineUsers:", onlineUsers);
-
   useEffect(() => {
     const newSocket = io(import.meta.env.VITE_REACT_APP_BASE_URL, {
       query: { userId: user ? user._id : undefined },

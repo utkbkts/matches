@@ -19,7 +19,7 @@ const Sidebar = () => {
         <p className="text-center text-muted-foreground">{data?.status}</p>
       </div>
       <Separator />
-      <div className="flex flex-col justify-between h-[55vh]">
+      <div className="flex flex-col justify-between mt-32">
         <SidebarLinks />
         <Link to={"/members"} className="">
           <Button className="w-full" variant={"outline"}>

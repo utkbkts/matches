@@ -17,7 +17,7 @@ export const userApi = createApi({
     getUser: builder.query<SignupType, string>({
       query: () => "/me",
       transformResponse: (response: { user: SignupType }) => response.user,
-      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+      async onQueryStarted(_args, { dispatch, queryFulfilled }) {
         dispatch(setLoading(true));
         try {
           const { data } = await queryFulfilled;
@@ -49,7 +49,7 @@ export const userApi = createApi({
         };
       },
       invalidatesTags: ["User"],
-      async onQueryStarted(args, { dispatch, queryFulfilled }) {
+      async onQueryStarted(_args, { dispatch, queryFulfilled }) {
         try {
           await queryFulfilled;
           await dispatch(userApi.endpoints.getUser.initiate(""));

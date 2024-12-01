@@ -111,7 +111,7 @@ const CardPackage = ({ packageData }: Props) => {
           className="flex mt-auto justify-center p-4 bg-gray-50"
         >
           <button className="bg-gradient-to-r from-green-400 to-blue-500 text-white px-6 py-2 rounded-full font-semibold shadow-md hover:from-green-500 hover:to-blue-600 transition-colors">
-            Satın Al
+            Buy
           </button>
         </CardFooter>
       </Card>

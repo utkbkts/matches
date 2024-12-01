@@ -31,9 +31,9 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     female: number;
     onlineUsers: [];
   }>({
-    total: 7,
-    male: 3,
-    female: 4,
+    total: 0,
+    male: 0,
+    female: 0,
     onlineUsers: [],
   });
 

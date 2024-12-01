@@ -64,6 +64,7 @@ io.on("connection", async (socket) => {
       await User.findByIdAndUpdate(userId, { isOnline: true });
     }
 
+    await updateOnlineStatus();
     socket.on("disconnect", () => handleDisconnect(userId));
   } catch (error) {
     console.error("Error during connection handling:", error.message);

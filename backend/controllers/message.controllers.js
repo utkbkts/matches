@@ -42,8 +42,6 @@ const sendMessage = async (req, res) => {
       io.to(receiverSocketId).emit("newMessage", populatedMessage);
     }
 
-    io.emit("notification", populatedMessage);
-
     return res.status(201).json({
       message: "Message sent successfully",
       newMessage: populatedMessage,

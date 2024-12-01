@@ -87,10 +87,8 @@ const MemberChat = () => {
 
   const { id } = useParams();
 
-  const [
-    sendMutation,
-    { isLoading, isSuccess, isError, error, data: sendData },
-  ] = useSendMessageMutation();
+  const [sendMutation, { isLoading, isSuccess, isError, error }] =
+    useSendMessageMutation();
 
   useGetSocketMessage();
 
@@ -127,7 +125,7 @@ const MemberChat = () => {
   const onSubmit = async (data: any) => {
     try {
       await sendMutation({ body: { ...data }, id });
-      dispatch(setMessages([...messages, sendData]));
+      dispatch(setMessages([...messages, data.message]));
       reset();
     } catch (error) {
       console.log(error);
@@ -209,7 +207,11 @@ const MemberChat = () => {
                         message={msg?.message}
                         time={msg?.createdAt}
                         isUser={msg?.senderId?._id === senderId}
-                        avatarReceiverId={msg?.senderId?.picture?.url}
+                        avatarReceiverId={
+                          msg?.senderId?._id === senderId
+                            ? msg?.senderId?.picture?.url
+                            : msg?.receiverId?.picture?.url
+                        }
                       />
                     </div>
                   );

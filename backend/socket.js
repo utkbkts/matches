@@ -62,15 +62,6 @@ io.on("connection", async (socket) => {
       await User.findByIdAndUpdate(userId, { isOnline: true });
     }
 
-    socket.on("newMessage", ({ receiverId, message }) => {
-      const receiverSocketIds = connectedUsers[receiverId];
-      if (receiverSocketIds) {
-        receiverSocketIds.forEach((socketId) => {
-          io.to(socketId).emit("newMessage", { message });
-        });
-      }
-    });
-
     await updateOnlineStatus();
 
     socket.on("disconnect", () => handleDisconnect(userId));
@@ -78,16 +69,6 @@ io.on("connection", async (socket) => {
     console.error("Error during connection handling:", error.message);
   }
 });
-
-export const notifyOrderStatusUpdated = (userId, notification) => {
-  const socketId = connectedUsers[userId];
-  if (socketId) {
-    io.to(socketId).emit("notification", {
-      messages: "New Message",
-      notification,
-    });
-  }
-};
 
 export const getReceiverSocketId = (receiverId) => {
   return connectedUsers[receiverId];

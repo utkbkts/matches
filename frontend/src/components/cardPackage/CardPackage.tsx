@@ -71,7 +71,7 @@ const CardPackage = ({ packageData }: Props) => {
 
   return (
     <div>
-      <Card className="md:w-[350px] w-full shadow-lg rounded-lg overflow-hidden hover:scale-105 transition-transform duration-300 h-[450px] flex flex-col">
+      <Card className="md:w-[350px]  shadow-lg rounded-lg overflow-hidden hover:scale-105 transition-transform duration-300 h-[450px] flex flex-col">
         {/* Başlık ve Açıklama */}
         <CardHeader className="text-center p-6 bg-gradient-to-r from-indigo-50 to-white border-b border-gray-200">
           <CardTitle className="text-2xl font-extrabold text-indigo-700 mb-2">

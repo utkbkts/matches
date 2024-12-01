@@ -11,7 +11,6 @@ class apiFilter {
         }
       : {};
     this.query = this.query.find({ ...search });
-    console.log(search);
     return this;
   }
 

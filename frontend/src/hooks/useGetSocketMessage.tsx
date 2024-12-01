@@ -10,7 +10,7 @@ const useGetSocketMessage = () => {
 
   useEffect(() => {
     if (!socket) {
-      return console.log("not socket");
+      return 
     }
     socket.on("newMessage", (newMessage) => {
       dispatch(setMessages([...messages, newMessage]));

@@ -123,7 +123,6 @@ const MemberChat = () => {
   }, [isError, isSuccess, error]);
 
   const onSubmit = async (data: any) => {
-    console.log("🚀 ~ onSubmit ~ data:", data);
     try {
       await sendMutation({ body: { ...data }, id });
       dispatch(setMessages([...messages, data]));

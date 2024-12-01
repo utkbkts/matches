@@ -92,7 +92,7 @@ const UpdatePackage = () => {
   }, [data]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen flex-col gap-4">
+    <div className="flex items-center justify-center  flex-col gap-4">
       {user?.currentSubscription === null ? (
         <h1>Buy now to find your dream partner</h1>
       ) : (
@@ -112,7 +112,7 @@ const UpdatePackage = () => {
             </div>
           ) : (
             <div className="flex flex-col items-center">
-              <span className="text-muted-foreground">
+              <span className="text-muted-foreground text-center">
                 Your package will expire{" "}
                 {calculateDate(data?.subscription?.subscription_end_date)}.
               </span>
@@ -121,10 +121,10 @@ const UpdatePackage = () => {
         </>
       )}
       <div className="flex flex-col items-center gap-4">
-        <h1 className="font-semibold text-xl">
+        <h1 className="font-semibold text-xl text-center">
           You can upgrade your packages now.
         </h1>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid lg:grid-cols-2 grid-cols-1 gap-4 w-full">
           {cardPackageData.map((packageData) => (
             <CardPackage packageData={packageData} />
           ))}

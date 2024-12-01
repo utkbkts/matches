@@ -28,11 +28,11 @@ const Members = () => {
             return (
               <div
                 key={member._id}
-                className="relative flex items-center gap-4 bg-white p-4 rounded-lg shadow-md w-full"
+                className="relative flex items-center justify-center gap-4 bg-white p-4 rounded-lg shadow-md w-full"
               >
                 {/* Online Durum İkonu */}
                 {isOnline && (
-                  <div className="bg-green-500 absolute rounded-full h-8 w-8 top-12 left-10"></div>
+                  <div className="bg-green-500 absolute rounded-full h-8 w-8 top-12 lg:left-10  md:left-32 left-10"></div>
                 )}
 
                 {/* Member İçeriği */}

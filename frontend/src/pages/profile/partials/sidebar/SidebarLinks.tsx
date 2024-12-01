@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 
-const menuLinks = [
+export const menuLinks = [
   { id: 1, title: "Dashboard", href: "/user-profile" },
   { id: 2, title: "Photo Update", href: "/user-profile/photos" },
   { id: 3, title: "Password Update", href: "/user-profile/password" },

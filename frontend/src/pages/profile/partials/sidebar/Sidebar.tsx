@@ -1,6 +1,8 @@
 import { Separator } from "@/components/ui/separator";
 import SidebarLinks from "./SidebarLinks";
 import { useGetUserQuery } from "@/store/api/user-api";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   const { data } = useGetUserQuery("");
@@ -17,8 +19,13 @@ const Sidebar = () => {
         <p className="text-center text-muted-foreground">{data?.status}</p>
       </div>
       <Separator />
-      <div>
+      <div className="flex flex-col justify-between h-full">
         <SidebarLinks />
+        <Link to={"/members"} className="">
+          <Button className="w-full" variant={"outline"}>
+            Go Back
+          </Button>
+        </Link>
       </div>
     </div>
   );

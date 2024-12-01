@@ -2,12 +2,10 @@ import { dateHandler } from "@/helpers/date-format";
 import { Link } from "react-router-dom";
 
 const ChatNotification = ({ msg }: any) => {
-  console.log("🚀 ~ ChatNotification ~ msg:", msg);
-
   return (
     <div className="flex flex-col p-4">
-      <div className="">
-        <table className="table-fixed overflow-scroll w-full bg-white border border-gray-200 rounded-lg shadow-md">
+      <div className="w-full overflow-x-auto">
+        <table className="table-fixed overflow-scroll  bg-white border border-gray-200 md:w-full rounded-lg shadow-md w-[700px]">
           <thead className="bg-gray-200">
             <tr>
               <th className="px-4 py-2 text-left font-semibold">Sender</th>

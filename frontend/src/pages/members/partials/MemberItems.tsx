@@ -5,9 +5,11 @@ import { Link } from "react-router-dom";
 
 interface Props {
   member: MembersType;
+  isLiked: any;
 }
 
-const MemberItems = ({ member }: Props) => {
+const MemberItems = ({ member, isLiked }: Props) => {
+  console.log("🚀 ~ MemberItems ~ isLiked:", isLiked);
   return (
     <div className="rounded-2xl relative border border-gray-200 mt-4 bg-gradient-to-t w-[400px] cursor-pointer hover:scale-110 transition-all duration-500">
       <div className="absolute bottom-0 w-full h-24 bg-gradient-to-b from-black/0 to-black/70 z-10"></div>
@@ -30,7 +32,11 @@ const MemberItems = ({ member }: Props) => {
           </div>
         </Link>
         <div className="absolute top-2 right-2">
-          <Heart className="cursor-pointer" />
+          <Heart
+            className="cursor-pointer"
+            stroke={isLiked ? "red" : "currentColor"}
+            fill={isLiked ? "red" : "none"}
+          />
         </div>
       </div>
     </div>

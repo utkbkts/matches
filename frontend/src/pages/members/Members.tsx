@@ -12,7 +12,13 @@ const Members = () => {
   const uniqueUser = data?.members?.filter(
     (item: MembersType) => item._id !== user?._id
   );
+  //filtered me user
+  const favoriteUserIds = user?.myFavorite?.map((item: any) => item.user);
 
+  const filtered = uniqueUser?.filter((item: any) =>
+    favoriteUserIds?.includes(item._id)
+  );
+  console.log("🚀 ~ Members ~ filtered:", filtered);
   return (
     <div className="min-h-screen w-full bg-gray-50">
       <div className="container mx-auto pt-12">
@@ -24,7 +30,9 @@ const Members = () => {
             const isOnline = onlineUsers?.onlineUsers?.some(
               (onlineUser: any) => onlineUser._id === member._id
             );
-
+            const isLiked = filtered?.some(
+              (item: any) => item._id === member._id
+            );
             return (
               <div
                 key={member._id}
@@ -36,7 +44,7 @@ const Members = () => {
                 )}
 
                 {/* Member İçeriği */}
-                <MemberItems member={member} />
+                <MemberItems member={member} isLiked={isLiked} />
               </div>
             );
           })}

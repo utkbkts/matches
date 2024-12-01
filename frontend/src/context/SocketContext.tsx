@@ -1,3 +1,4 @@
+import { useAppSelector } from "@/store/hooks";
 import React, { createContext, useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
 
@@ -23,39 +24,35 @@ const SocketContext = createContext<SocketContextType>({
 
 export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
+  const { user } = useAppSelector((state) => state.auth);
   const [onlineUsers, setOnlineUsers] = useState<{
     total: number;
     male: number;
     female: number;
     onlineUsers: [];
   }>({
-    total: 0,
-    male: 0,
-    female: 0,
+    total: 7,
+    male: 3,
+    female: 4,
     onlineUsers: [],
   });
 
   useEffect(() => {
-    const newSocket = io(import.meta.env.VITE_REACT_APP_BASE_URL);
+    if (user && user._id) {
+      const newSocket = io(import.meta.env.VITE_REACT_APP_BASE_URL, {
+        query: { userId: user._id },
+      });
+      setSocket(newSocket);
 
-    setSocket(newSocket);
-
-    newSocket.on(
-      "online-status",
-      (users: {
-        total: number;
-        male: number;
-        female: number;
-        onlineUsers: [];
-      }) => {
+      newSocket.on("online-status", (users) => {
         setOnlineUsers(users);
-      }
-    );
+      });
 
-    return () => {
-      newSocket.disconnect();
-    };
-  }, []);
+      return () => {
+        newSocket.disconnect();
+      };
+    }
+  }, [user]);
 
   return (
     <SocketContext.Provider value={{ socket, onlineUsers }}>

@@ -51,8 +51,8 @@ const Footer = () => {
                   fill="url(#paint0_linear_9129_4680)"
                 />
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M0 4.54673C0 2.03564 2.07211 0 4.62819 0H21.5399V0.00124069C28.9908 0.0998525 35 6.06429 35 13.4075C35 20.8123 28.8897 26.8151 21.3523 26.8151C18.6648 26.8151 16.1587 26.052 14.0463 24.7342L6.58815 31.9057C4.13431 34.2652 0 32.5573 0 29.1841V4.54673ZM11.5194 22.7055C9.15709 20.295 7.70452 17.0179 7.70452 13.4075C7.70452 12.5277 8.43056 11.8144 9.32619 11.8144C10.2218 11.8144 10.9479 12.5277 10.9479 13.4075C10.9479 19.0526 15.6061 23.6288 21.3523 23.6288C27.0985 23.6288 31.7567 19.0526 31.7567 13.4075C31.7567 7.76248 27.0985 3.18626 21.3523 3.18626H4.62819C3.86336 3.18626 3.24334 3.79536 3.24334 4.54673V29.1841C3.24334 29.7351 3.91866 30.014 4.31948 29.6286L11.5194 22.7055Z"
                   fill="url(#paint1_linear_9129_4680)"
                 />
@@ -65,8 +65,8 @@ const Footer = () => {
                     y2="33.4573"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#7C3AED" />
-                    <stop offset="0.993738" stop-color="#4F46E5" />
+                    <stop stopColor="#7C3AED" />
+                    <stop offset="0.993738" stopColor="#4F46E5" />
                   </linearGradient>
                   <linearGradient
                     id="paint1_linear_9129_4680"
@@ -76,8 +76,8 @@ const Footer = () => {
                     y2="33.4573"
                     gradientUnits="userSpaceOnUse"
                   >
-                    <stop stop-color="#7C3AED" />
-                    <stop offset="0.993738" stop-color="#4F46E5" />
+                    <stop stopColor="#7C3AED" />
+                    <stop offset="0.993738" stopColor="#4F46E5" />
                   </linearGradient>
                 </defs>
               </svg>
@@ -87,7 +87,7 @@ const Footer = () => {
               query ?
             </p>
             <a
-              href="javascript:;"
+              href="#"
               className="py-2.5 px-5 h-9 block w-fit bg-indigo-600 rounded-full shadow-sm text-xs text-white mx-auto transition-all  duration-500 hover:bg-indigo-700 lg:mx-0"
             >
               Contact us
@@ -97,34 +97,22 @@ const Footer = () => {
             <h4 className="text-lg text-gray-900 font-medium mb-7">Pagedone</h4>
             <ul className="text-sm  transition-all duration-500">
               <li className="mb-6">
-                <a
-                  href="javascript:;"
-                  className="text-gray-600 hover:text-gray-900"
-                >
+                <a href="#" className="text-gray-600 hover:text-gray-900">
                   Home
                 </a>
               </li>
               <li className="mb-6">
-                <a
-                  href="javascript:;"
-                  className=" text-gray-600 hover:text-gray-900"
-                >
+                <a href="#" className=" text-gray-600 hover:text-gray-900">
                   About
                 </a>
               </li>
               <li className="mb-6">
-                <a
-                  href="javascript:;"
-                  className=" text-gray-600 hover:text-gray-900"
-                >
+                <a href="#" className=" text-gray-600 hover:text-gray-900">
                   Pricing
                 </a>
               </li>
               <li>
-                <a
-                  href="javascript:;"
-                  className=" text-gray-600 hover:text-gray-900"
-                >
+                <a href="#" className=" text-gray-600 hover:text-gray-900">
                   Features
                 </a>
               </li>
@@ -134,34 +122,22 @@ const Footer = () => {
             <h4 className="text-lg text-gray-900 font-medium mb-7">Products</h4>
             <ul className="text-sm  transition-all duration-500">
               <li className="mb-6">
-                <a
-                  href="javascript:;"
-                  className="text-gray-600 hover:text-gray-900"
-                >
+                <a href="#" className="text-gray-600 hover:text-gray-900">
                   Figma UI System
                 </a>
               </li>
               <li className="mb-6">
-                <a
-                  href="javascript:;"
-                  className=" text-gray-600 hover:text-gray-900"
-                >
+                <a href="#" className=" text-gray-600 hover:text-gray-900">
                   Icons Assets
                 </a>
               </li>
               <li className="mb-6">
-                <a
-                  href="javascript:;"
-                  className=" text-gray-600 hover:text-gray-900"
-                >
+                <a href="#" className=" text-gray-600 hover:text-gray-900">
                   Responsive Blocks
                 </a>
               </li>
               <li>
-                <a
-                  href="javascript:;"
-                  className=" text-gray-600 hover:text-gray-900"
-                >
+                <a href="#" className=" text-gray-600 hover:text-gray-900">
                   Components Library
                 </a>
               </li>
@@ -173,34 +149,22 @@ const Footer = () => {
             </h4>
             <ul className="text-sm  transition-all duration-500">
               <li className="mb-6">
-                <a
-                  href="javascript:;"
-                  className="text-gray-600 hover:text-gray-900"
-                >
+                <a href="#" className="text-gray-600 hover:text-gray-900">
                   FAQs
                 </a>
               </li>
               <li className="mb-6">
-                <a
-                  href="javascript:;"
-                  className=" text-gray-600 hover:text-gray-900"
-                >
+                <a href="#" className=" text-gray-600 hover:text-gray-900">
                   Quick Start
                 </a>
               </li>
               <li className="mb-6">
-                <a
-                  href="javascript:;"
-                  className=" text-gray-600 hover:text-gray-900"
-                >
+                <a href="#" className=" text-gray-600 hover:text-gray-900">
                   Documentation
                 </a>
               </li>
               <li>
-                <a
-                  href="javascript:;"
-                  className=" text-gray-600 hover:text-gray-900"
-                >
+                <a href="#" className=" text-gray-600 hover:text-gray-900">
                   User Guide
                 </a>
               </li>
@@ -210,34 +174,22 @@ const Footer = () => {
             <h4 className="text-lg text-gray-900 font-medium mb-7">Blogs</h4>
             <ul className="text-sm  transition-all duration-500">
               <li className="mb-6">
-                <a
-                  href="javascript:;"
-                  className="text-gray-600 hover:text-gray-900"
-                >
+                <a href="#" className="text-gray-600 hover:text-gray-900">
                   News
                 </a>
               </li>
               <li className="mb-6">
-                <a
-                  href="javascript:;"
-                  className=" text-gray-600 hover:text-gray-900"
-                >
+                <a href="#" className=" text-gray-600 hover:text-gray-900">
                   Tips & Tricks
                 </a>
               </li>
               <li className="mb-6">
-                <a
-                  href="javascript:;"
-                  className=" text-gray-600 hover:text-gray-900"
-                >
+                <a href="#" className=" text-gray-600 hover:text-gray-900">
                   New Updates
                 </a>
               </li>
               <li>
-                <a
-                  href="javascript:;"
-                  className=" text-gray-600 hover:text-gray-900"
-                >
+                <a href="#" className=" text-gray-600 hover:text-gray-900">
                   Events
                 </a>
               </li>
@@ -252,7 +204,7 @@ const Footer = () => {
             </span>
             <div className="flex mt-4 space-x-4 sm:justify-center lg:mt-0 ">
               <a
-                href="javascript:;"
+                href="#"
                 className="w-9 h-9 rounded-full bg-gray-700 flex justify-center items-center hover:bg-indigo-600"
               >
                 <svg
@@ -272,7 +224,7 @@ const Footer = () => {
                 </svg>
               </a>
               <a
-                href="javascript:;"
+                href="#"
                 className="w-9 h-9 rounded-full bg-gray-700 flex justify-center items-center hover:bg-indigo-600"
               >
                 <svg
@@ -288,7 +240,7 @@ const Footer = () => {
                 </svg>
               </a>
               <a
-                href="javascript:;"
+                href="#"
                 className="w-9 h-9 rounded-full bg-gray-700 flex justify-center items-center hover:bg-indigo-600"
               >
                 <svg
@@ -304,7 +256,7 @@ const Footer = () => {
                 </svg>
               </a>
               <a
-                href="javascript:;"
+                href="#"
                 className="w-9 h-9 rounded-full bg-gray-700 flex justify-center items-center hover:bg-indigo-600"
               >
                 <svg
@@ -314,8 +266,8 @@ const Footer = () => {
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    fillRule="evenodd"
+                    clipRule="evenodd"
                     d="M13.9346 1.13529C14.5684 1.30645 15.0665 1.80588 15.2349 2.43896C15.5413 3.58788 15.5413 5.98654 15.5413 5.98654C15.5413 5.98654 15.5413 8.3852 15.2349 9.53412C15.0642 10.1695 14.5661 10.669 13.9346 10.8378C12.7886 11.1449 8.19058 11.1449 8.19058 11.1449C8.19058 11.1449 3.59491 11.1449 2.44657 10.8378C1.81277 10.6666 1.31461 10.1672 1.14622 9.53412C0.839844 8.3852 0.839844 5.98654 0.839844 5.98654C0.839844 5.98654 0.839844 3.58788 1.14622 2.43896C1.31695 1.80353 1.81511 1.30411 2.44657 1.13529C3.59491 0.828125 8.19058 0.828125 8.19058 0.828125C8.19058 0.828125 12.7886 0.828125 13.9346 1.13529ZM10.541 5.98654L6.72178 8.19762V3.77545L10.541 5.98654Z"
                     fill="currentColor"
                   />

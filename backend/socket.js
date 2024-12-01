@@ -56,6 +56,7 @@ const handleDisconnect = async (userId) => {
 io.on("connection", async (socket) => {
   try {
     const userId = socket.handshake.query.userId;
+    console.log("🚀 ~ io.on ~ userId:", userId);
 
     if (userId) {
       connectedUsers[userId] = socket.id;

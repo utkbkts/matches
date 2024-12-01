@@ -143,7 +143,7 @@ const HomePage = () => {
           </div>
           <div className="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 mt-12 gap-4 ">
             {cardPackageData.map((packageData) => (
-              <CardPackage packageData={packageData} />
+              <CardPackage key={packageData.id} packageData={packageData} />
             ))}
           </div>
         </section>

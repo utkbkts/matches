@@ -54,6 +54,8 @@ const handleDisconnect = async (userId) => {
 };
 
 io.on("connection", async (socket) => {
+  await updateOnlineStatus();
+
   try {
     const userId = socket.handshake.query.userId;
 
@@ -61,7 +63,6 @@ io.on("connection", async (socket) => {
       connectedUsers[userId] = socket.id;
       await User.findByIdAndUpdate(userId, { isOnline: true });
     }
-    await updateOnlineStatus();
 
     socket.on("disconnect", () => handleDisconnect(userId));
   } catch (error) {

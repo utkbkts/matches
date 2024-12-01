@@ -18,7 +18,6 @@ const Members = () => {
   const filtered = uniqueUser?.filter((item: any) =>
     favoriteUserIds?.includes(item._id)
   );
-  console.log("🚀 ~ Members ~ filtered:", filtered);
   return (
     <div className="min-h-screen w-full bg-gray-50">
       <div className="container mx-auto pt-12">

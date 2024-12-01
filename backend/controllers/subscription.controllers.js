@@ -13,7 +13,7 @@ const subscriptionCreateStripe = async (req, res, next) => {
     if (!planId || !planAmount || !planCurrency || !planInterval) {
       return next(new ErrorHandler("All fields are required", 400));
     }
-
+    const userId = req.user._id;
     // Stripe checkout session oluşturma
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],

@@ -56,7 +56,6 @@ const handleDisconnect = async (userId) => {
 io.on("connection", async (socket) => {
   try {
     const userId = socket.handshake.query.userId;
-    console.log("🚀 ~ io.on ~ userId:", userId);
 
     if (userId) {
       connectedUsers[userId] = socket.id;
@@ -77,7 +76,6 @@ export const getReceiverSocketId = (receiverId) => {
 
 export const notifyOrderStatusUpdated = (userId, notification) => {
   const socketId = connectedUsers[userId];
-  console.log("🚀 ~ notifyOrderStatusUpdated ~ socketId:", socketId);
   if (socketId) {
     io.to(socketId).emit("notification", {
       messages: "New Message",

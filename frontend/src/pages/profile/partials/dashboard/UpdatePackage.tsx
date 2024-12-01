@@ -76,7 +76,7 @@ export const cardPackageData = [
 
 const UpdatePackage = () => {
   const { user } = useAppSelector((state) => state.auth);
-  const { data } = useGetByIdQuery("");
+  const { data } = useGetByIdQuery({});
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {

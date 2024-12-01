@@ -44,7 +44,6 @@ const register = async (req, res, next) => {
           folder: "match/avatar",
           transformation: [{ width: 500, height: 500, crop: "fill" }],
         });
-        console.log("🚀 ~ register ~ avatarUpload:", avatarUpload);
         pictureData = {
           public_id: avatarUpload.public_id,
           url: avatarUpload.url,
@@ -55,7 +54,6 @@ const register = async (req, res, next) => {
         );
       }
     }
-    console.log("🚀 ~ register ~ pictureData:", pictureData);
 
     const user = await User.create({
       name,

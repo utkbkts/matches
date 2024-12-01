@@ -20,7 +20,7 @@ const useGetSocketMessage = () => {
     return () => {
       socket.off("newMessage");
     };
-  }, [socket, dispatch]);
+  }, [socket, messages]);
 };
 
 export default useGetSocketMessage;

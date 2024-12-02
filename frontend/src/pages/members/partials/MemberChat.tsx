@@ -207,11 +207,7 @@ const MemberChat = () => {
                         message={msg?.message}
                         time={msg?.createdAt}
                         isUser={msg?.senderId?._id === senderId}
-                        avatarReceiverId={
-                          msg?.senderId?._id === senderId
-                            ? msg?.senderId?.picture?.url
-                            : msg?.receiverId?.picture?.url
-                        }
+                        avatarReceiverId={msg?.senderId?.picture?.url}
                       />
                     </div>
                   );

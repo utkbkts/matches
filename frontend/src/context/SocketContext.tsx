@@ -36,7 +36,6 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
     female: 0,
     onlineUsers: [],
   });
-  console.log("🚀 ~ SocketProvider ~ onlineUsers:", onlineUsers);
 
   useEffect(() => {
     const newSocket = io(import.meta.env.VITE_REACT_APP_BASE_URL, {

@@ -19,9 +19,9 @@ const Sidebar = () => {
         <p className="text-center text-muted-foreground">{data?.status}</p>
       </div>
       <Separator />
-      <div className="flex flex-col justify-between mt-32">
+      <div className="flex flex-col justify-between ">
         <SidebarLinks />
-        <Link to={"/members"} className="">
+        <Link to={"/members"} className="mt-32">
           <Button className="w-full" variant={"outline"}>
             Go Back
           </Button>

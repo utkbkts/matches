@@ -85,13 +85,13 @@ const CardPackage = ({ packageData }: Props) => {
         {/* İçerik Kısmı */}
         <CardContent className="p-4 flex-grow h-full">
           <div className="flex justify-between items-center">
-            <span className="text-lg font-semibold text-gray-700">Fiyat:</span>
+            <span className="text-lg font-semibold text-gray-700">Price:</span>
             <span className="text-xl font-bold text-green-600">
               ${planAmount}({planCurrency})
             </span>
           </div>
           <div className="flex justify-between items-center mt-2">
-            <span className="text-lg font-semibold text-gray-700">Süre:</span>
+            <span className="text-lg font-semibold text-gray-700">Time:</span>
             <span className="text-md text-gray-600">{planInterval}</span>
           </div>
           {/* Özellikler Listesi */}

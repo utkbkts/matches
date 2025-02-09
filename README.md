@@ -33,7 +33,7 @@
 
 ## 🔗 Bağlantılar
 
-- **Canlı Demo**: https://matches-2kf0.onrender.com
+- **Canlı Demo**: https://matches-1syi.onrender.com
 - **Youtube Video**: https://www.youtube.com/watch?v=LUw9PkQTWYU
 
 ---

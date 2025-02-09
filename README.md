@@ -1,3 +1,6 @@
+Email: mustafa@gmail.com
+şifre : 123123
+
 # 🎉 Eşleştirme Uygulaması
 
 **Hoş geldiniz!** Çevrenizdeki insanlar ile eşleşip konuşup tanışabileceğiniz bir SaaS platformu
